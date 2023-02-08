@@ -1,0 +1,17 @@
+
+
+2/7/23
+
+    Intro to class and links via calendar, class overview Instructor, background in marketing and econ. Got into coding after doing a Udemy course, also attended coding dojo, ta, then launched the python flask program, moved to data science, left coding dojo to work somewhere else. Enjoyed the teaching aspect of coding dojo, really enjoyed working here so he came back to continue teaching. Two dogs, super cute. TA Grey, worked with her before, pretty awesome. 
+
+
+    What is a full stack application?
+
+        Combination of front end, back end and database, takes information from the front end, passes it to the back end, then the back end passes it to the database, database tells the back end it worked, and the process continues 
+
+
+    Hows MERN Different?
+
+        In this stack well be running two servers, a front end client server, and then a backend server. unlike python and java, where it was just one server for the backend. 
+
+    JavaScript Refresher! 
