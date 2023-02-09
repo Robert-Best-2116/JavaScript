@@ -1,0 +1,30 @@
+
+
+JavaScript Overview
+
+
+    Why JS?
+
+        In many ways, JavaScript is the magic that brings the interet to life. Many of the most amazing new things we've seen on the web in the past ten yrears are powered by JavaScript. Google Auto-Complete, animations, dynamic transitions, single-page web applications, in-browser chat apps, loading screens, and drop down menus to name a few. We almost take for granted how widespread JavaScript is. this is why we believe every developer should know at least some JavaScript. 
+
+        Not only that, no matter what stack or language you decide to code in. You will have some interaction with JavaScript. It's part of the big three client technologies (HTML, CSS, JavaScript). Not only that it is the most widely used langauge of the web world. When you code in JS you code in a language that more web devs can understand than any otehr language. This is why we recommend doing Algorithms in JavaScript as well. It makes a good technical interview langauge because it's so widely understood. 
+
+    
+    The Big Three 
+
+        Often times when refering to the core langauges of the internet, we talk about the "big three" thease three technologies are present in just about every application you encounter on the web, let us recap. 
+
+            HTML-HTML represents the content and the structure. We can think of this as the skeleton of a webpage. Elements are first placed into the Document Object Model, or DOM, so that data can be represented on the browser. 
+
+            CSS-CSS represents the style and positioning of our HMTL elements, we can think of this as the skin and clothes, the visual side of our website. Things like color, font, sizing, and positioning are all controlled in part by CSS. 
+
+            JavaScript-JavaScript is the action. we can think of it as the behaviour of our website. You can build beautiful static webpages with HTML and CSS but there not actually functional until we add logic. JS allows us to interact with our HTML and CSS by dynamically manipulating the DOM. 
+
+
+    Features 
+
+        JavaScript is an interpreted langauge. At runtime, an interpreter parses the JavaScript we wrote, and turns into into machine code for the computer. This is contrary to a compiled language, which compiles our code into a machine langauge prior to runtime. The most common of all JavaScript interpreters are built into web browsers, With Chrome using the V8 engine, and FireFox usuing SpiderMonkey. Thease interpreters each have their own specific rules for how JavaScript should run and it sohuld be noted that not all interpreters have identical behaviour
+
+        JavaScript is an event-driven programming langauge. When we think of it as the layer of behavior between the UI and the back-end this makes sence. Creating a <button> in HMTL does not mean that the button does anything! However, clicking that button is an event that JavaScript can listen for. JavaScript comes equipped with all manner of UI events, from hovering your mouse over a specific HMTL element, to scrolling, to clicking, to submitting forms. Now consider that the HTTP request and responce cycle is also based around user driven events and you can see how thease technologies overlap and work together. 
+
+        JavaScript is run on a single thread. Putting it simply, JavaScript runs one command at a time, never performing operations concurrently. This raises some intresting questions. If JavaScript only ever runs one command at a time, how does it listen for events??? The answer is the event loop, a specialized queue that allows JavaScript to dynamically add new operations when the events happen. Even if it is already performing operations. This is why sometimes and perhaps erroneously, refered to as "non-blocking".

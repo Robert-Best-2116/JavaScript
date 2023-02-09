@@ -1,0 +1,158 @@
+
+
+EMCAScript & ES6 
+
+    This next section is a primer on the background of JS. By learning some of the history of the langauge we can better understand the importance of ES6. As the primary front end scripting langauge of the internet, JS is a massive iceberg of information, not all of it is visible from the surface. We belive that understanding how the langauge came about will better your growth as a JS dev. 
+
+    Whats in a name??
+
+        This might come as a surprise, but JS wasn't always called JS. Originally it was called Mocha during development. After the first beta release, the name was changed to LiveScript. Not to long after, a browser vendor called Netscape decided to again rename the langauge to JavaScript. Feeding off the success of the popular langauge Java. 
+
+        Fast forward a couple of decades later and now even the name JavaScript dosen't necessarily tell the whole story. In order for us to truly understand the JavaScript landscape, we're going to need to understand how the language is standardized. 
+
+    Enter EMCAScript
+    
+        Nowadays, JS is the de facto front end scripting langauge of the internet. It's an incredibly widespread technology that has to work consistently across all of the major browsers and interpreters. Due to this JavaScript needed a formal process to further the langauge without alienating browser vendors, users or developers. The end result is a sort of 'master reference' that all the JS interpreters should be understanding JavaScript as. This is our standardization. 
+
+        The ECMA or European Computer Manufacturer's Association, maintains the current up-to-date standardization of JavaScript. This standard is called EMCAScript. The name ECMAScript, sometimes shortened to ES, ended up being nothing more than a compromise amonst the different organizations involved in the specification process. Brendon Eich, the creator of JavaScript, has commended that "it was always an unwanted trade name that sounds like a skin disease"
+
+        For us as developers, the takeaway is simple: EMCAScript is the standardization of JavaScript and JavaScript is the implementation of the ECMA standard. Most of the JavaScript you've been exposed to is a version of the standard called ES5, standardized in 2009 and sometimes caleld ECMAScript 5.
+
+
+    ES6 and Beyond 
+
+        ES2015 or ES6 is the newest standard. Is a superset of ES5, meaning that it contains all the features of ES5, plus all of the new additions of ES6. This is a common theme theme for JavaScript standardizations, where new standards are often included as a superset of the old standard rarely deprecating features. 
+
+
+    Takeaways
+
+        ES6 is a superset of ES5. Because ES6 is not a full language in itself, we must learn both.
+        The vast majority of existing JavaScript is still ES5, including libraries, legacy code bases, and examples you encounter on the web. 
+        Many of the ES6's most important features are syntatic sugar. Not necessarily needed, but they make the language sweeter to write. 
+        JavaScript is the language, the ECMAScript is the standard. 
+        In the following chapters, we will be learning ES5 and ES6 in parallel, with the new ES6 features clearly marked. 
+
+
+
+Debugging JS 
+
+    Introduction 
+
+        Sooner or later your code is going to brea, no matter how talented or experienced you are. This is why self sufficency is so important. Building up our debugging skills is alot easer than always writing 100% perfect error-free code on your first try! Luckily, JavaScript has alot of tools to make it easeir for us to hunt down our bugs. As we talked about before, JavaScript runs in two parts. First it gets parsed to make sure it's viable JavaScript, then the code is actually run. Typically, errors follow this same format. We have syntax errors and runtime errors. 
+
+    
+    Syntax Errors 
+
+        Consider the below code? What do we console log??? 
+
+            let x = 1;
+            let y = 2;
+            let z == 3;
+            console.log(x + x);
+            console.log(y - z);
+            console.log(z * x);
+
+        Let z will throw an error due to ==, as it is an unexpected token. The parser will throw an unexpected token error. 
+
+        Syntax Errors happen when the parser finds invalid JavaScript. The moment an error is found, the parser terminates and the program ends without any code ever being run. In the above example, the console.logs never fired becasue the syntax error killed our app before it even started. 
+
+        Syntax errors show the line the parser errored on. This means your issue happened somewhere before that line and not necessarily that specific line. You should trace your syntax errors backwards starting on the line it errored. 
+
+
+    Runtime Errors 
+
+        A runtime error is what happens if your code successfully parses and the error happens while the program is running. Typically, we just call these bugs. Examples of runtime errors could be faulty logic or improperly written code. You wrote a set of instructions and the output is wrong. 
+
+        When your code doesn't behave in the way you expected, there are many techniques to finding the root of the problem. Ask yourself, what was the most recent line of code you added before your program started to fail? how many lines of code dide you write between tests? If it was anywhere above six or seven lines, you might be coding to much and running your code to little. Sometimes you need to go back to the very start and ask what seems like very basic questions, such as "What are the steps needed to do what i wanted to do?" 
+
+        At the end of the day, remember: 100% of all bugs you encounter were created by a dev. Remeber creating bugs dosen't make you a bad developer, it makes you a developer. 
+
+
+    Recap
+
+        When debugging your JS, always confirm that you have no syntax errors. Your code will not run until those errors are fixed.
+        When hunting syntax errors, typically the actual problem is before the line that errored, work backwards from there. 
+        Console.log everything!!! D:!!! Often times the biggest errors come from faulty assumptions. That variable you thought was a string was actually an array of strings which can completely change your logic. 
+        Run your code early and often, especially at first, if your writing 20-30 lines of code at a time before seeing if any of it works, your coding to much before testing. The stronger you get with JS the more assumptions you can make but at first assume nothing.
+
+
+What is Scope???
+
+    Scope is the visibility or accessibility of information, such as variables and functions, to a particular section of code. JavaScript is function scoped and traditionally has two types of scope: global and local. New scopes are created by defining functions. 
+
+    Global Scope 
+
+        Every JavaScript application has a global scope. By definition that makes it omnipresent, which means that any variables orfunctions defined within are always available to every aspect of your application. 
+
+    Local Scope
+
+        Local Scope, in contrast, has much narrower program visibility. It is localized to the particular function in which that information is defined. 
+
+    Identifying Scope
+
+        Consider the following, can you identify the different scopes in the provided sample?
+
+            var beatles = ['Paul', 'George', 'John', 'Ringo'];
+            function printNames(names) {
+            function actuallyPrintingNames() {
+                for (var index = 0; index < names.length; index++) {
+                var name = names[index];
+            
+                console.log(name + ' was found at index ' + index);
+                }
+                console.log('name and index after loop is ' + name + ':' + index);
+            }
+            actuallyPrintingNames();
+            }
+            printNames(beatles);
+                                
+        global= beatles, print names
+        local= actuallyPrintingNames
+        function= name, index
+
+        Note- if you have a background in Java or C++ yo wil have noticed that the four loop does not createa scope and the variables that are exlusive to it, name and index are still available after completion, thats because Javascript is function scoped, so any variables no matter where they are defined are available throughout the entire scope. 
+
+
+    Const and Let 
+
+        With the release of ES6 we have two new ways to declare variables: const and let. These new declarations give us the ability to scope information more precisely to individual sections of code caleld block scoping. This gives us greater control over information visibility and allows us to reuse variable naems in the same function but diffrent code blocks, without conflict. A code block is defined by opening and closing curly braces {}. 
+
+        While both const and let are block scoped there are some differences we need to understand. Let allows for reassignment of our declared variables content and does not require a value upon declaration. Const, on the other hand must assign a value at creation and that value may not change for the like of the variable, it is immutable. 
+
+        With that knowledge let us refactor the previous example to use the new variable delcarations. What should be constant? what information changes over time? The name array should never assume a diffrent array so we should use const 
+
+            const beatles = ['Paul', 'George', 'John', 'Ringo'];
+
+        Now what about the for loop? As with most answers concerning programming: it depends. Do we want name and index information available after our loop? Should it cease to exist? Let us consider both scenarios. Assuming for the moment that we prefer our final console.log we would refactor it to this.
+
+            function actuallyPrintingNames() {
+            let index = 0;
+            let name;
+            for (index; index < names.length; index++) {
+                name = names[index];
+                console.log(name + ' was found at index ' + index);
+            }
+            console.log('name and index after loop is ' + name + ':' + index);
+            }
+    
+        However this will result in an error: RefrenceError: name is not defined. That is because name is only available insode our for loop. Removing it from the console.log and running it again will result in the same error but refrencing index. Even though it appears index is defined outside of the loop block {}. It is still part of the overall construct of our loop and included in its scope. Deleteing the console log statment, one last mod before moving on: name doesn't change during iteration so it needs to be a const. 
+
+            const name = names[index];
+
+        Initialy this doesn't make alot of sence. While name doesn't change on one iteration, it will certainly change on the next. Thats true, but the nature of block scoping creates an enviroment for that iteration only, and on the next a while new enviroment will exist for the block. Our final refactored code should look something like this: 
+
+
+            const beatles = ['Paul', 'George', 'John', 'Ringo'];
+            function printNames(names) {
+            function actuallyPrintingNames() {
+                for (let index = 0; index < names.length; index++) {
+                const name = names[index];
+            
+                console.log(name + ' was found at index ' + index);
+                }
+            }
+            actuallyPrintingNames();
+            }
+            printNames(beatles);
+
+        We are able to mix usage of var with const and let, but now that we have a better understanding of thease newer declarations we should avoid usuing var whenever possible. 
