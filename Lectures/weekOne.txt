@@ -15,3 +15,66 @@
         In this stack well be running two servers, a front end client server, and then a backend server. unlike python and java, where it was just one server for the backend. 
 
     JavaScript Refresher! 
+
+
+2/8/23
+
+    Terminal Refresher
+
+        ls-lists all files inside of your location 
+        Directory-aka a folder
+        cd- change directory, followed by location name, sometimes it must be in "" like for git bash if there are two words, and it is case sensitive in git bash. It is convent to only type the first three letters or so then hit tab. You can also chain the cd and continue to go further into the file structure without continuing to type cd 
+        cd..-is for back stepping, you can also chain it like so cd../.. 
+        mkdir-make directory followed by folder name note this only makes folders touch will be used for files. you can also make multiple folders at once. 
+        touch- creates new files, follow it by the file name with . file type 
+        code .- will open up everything up in VS code, but does not automatically work with windows or linux, not sure if it works with git bash. 
+
+        Creating custom alias with git bash - https://codeburst.io/learn-how-to-create-custom-bash-commands-in-less-than-4-minutes-6d4ceadd9590
+
+        Custom functions are also possible. Found some links but dated in 2019, 
+
+
+
+    Lecture 
+
+        Normal functions to arrow functions
+
+            ES5 function, your typical function that has function declaration, function name () with its parameters/arguments and { what the function does inside of its block scope }
+
+            Arrow function, create a variable, a const, declare the name,  = () =>, this tells the system and the program, that we are creating a variable that is a function, { establish what the function does inside} similar but the function is cleaner. 
+
+                1. it makes the code cleaner, 
+                2. automatically returns the value with an implicit return, so you will not need to type in return, 
+                3. it also has implicit parameters, ie const functionName = (name) => "hello ${name}";, Note if there is only one parameter, you don't need to use the (), You can also use a default parameter. const functionName = (name = "john") => "hello ${name}";
+
+
+        Destructuring 
+
+            Arrays 
+
+                We can take an array and destructure it, meaning we can take a value inside of an array, after it has already been set up, and create a variable, followed by the [] for an array, = to arrayName, inside of the array [] is assigning the indexes of the array to the values of the [] that we created, you can also ignore certain elements of the array, simply by leaving out one of them, ie [ , value2, value3] ex, const [value0, value1, value2] = arrayName to access it it would be like so console.log(value1, value2); Note you can also remove any of the previous values with just ","
+
+            
+            Objects (Dictionaries) 
+
+                Note for objects we use {}, for destructuring objects, you can target the keys, and it will print or access the values of those keys, you can also access nested key value pairs inside of it using . notation, const {key1, key2, key3} = dictionaryName; console.log(key1); or you could use const {key1, key2} = dictionaryName.key2;
+
+
+            Function
+
+                you can also destructure a function, you have access to what it returns, if it is a list or an object.  you will use [] for this, const [return1, return2, return3] = functionName(); 
+
+
+            Spread Operator
+
+                you still have your object, you destructure the object, but then add in ...rest inside of the const {value1, ...rest} = objectName; the ...variableName will give you an array of all of the values that are left but are not accessed, when using console.log you will not need to use the ...variableName, simply variableName. the ... is what is important. the variable name can be anything. you can also just assign the ... to an object to have it returned as an array. 
+
+
+
+    What is React D:!?!?!?!!?
+
+        React is a JS Library, but also a framework, as in it dictates how things are set up, its one of the most used front end language libraries that are out there. The big thing is that is a single page application, meaning that everything happens on one page. Unlike python and java, which send a new page of information after we sent the information to the back end and then the DB, the front end has to redownload all of that information after all of its been processed. Facebook decided that it was clunky so they made a bigger faster way!!!! Its known as React!! It allows you to keep all of the stuff that your going to use, and swap out what your not, by changing the view of what the user sees, and not changing out the page, but swapping out components. It does mean that it downloads every component from the get go. But only has to query the DB once, when we do something on our page, such as add a comment to an article, it will simply update your view, as the only thing that really changed is what you added. It does this by updating state, by targeting the element and changing the value. It also creates a virtual DOM, so it'll compare the copy and what is happening, and updates the element. 
+
+
+
+        
