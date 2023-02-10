@@ -77,4 +77,41 @@
 
 
 
-        
+
+2/7/23 
+
+    Office Hour 
+
+        Went over high level git hub pull requests, how it works and why, need to use that for my notes from my other laptop. 
+
+        What happens if you git init inside of another folder? creates a nested repo, creates a lot of issues, its a fairly common thing, a few steps need to be taken, 
+
+        when doing a react app project, create the project first, and git init inside of it, because the react app will create its own git init, and we want the git to be higher up than the react app.  
+
+
+    Lecture 
+
+        Review of previous lectures overview. 
+
+        Foundations of app.js and components
+
+            Whenever we have a component, when we are returning something we can only return one parent element, JSX expressions can only have one parent element, if we don't want to have a div, we can use JSX fragments <> </> as the parent element. There can be no sibling elements, only one parent element with its nested child elements. 
+
+            When creating your own component, you go into your source folder, create a folder called components it must be plural. As it is a keyword, anything we create lives inside of this folder. Creating components it must be capitalized, and you'll want it to be a .jsx file. Mainly because it will allow for the plugins and emmet tags to work. 
+
+                Note if you installed the ES7+ plugin you can type in "rafce" and it will autofill in some useful code for you, the component name must be the same as the function name, you need to return the div or <>, it'll also create the arrow function for you, and export default the component name.  By exporting it you can use that component anywhere in your code.  
+
+            The power of the export is that you can call the function inside of your app. It will be a self closing tag, <ComponentName/>, you will need to import the component from the location of the component. This is the real beginning of the leggos, this is where we build upon everything from this step right here. 
+
+            You can nest your components inside of one another!!!!!!!!! I wonder if the onClick functions and commands will alow different renderings and values, depending on if statements and other things and values that are passed in. 
+
+
+        Intro to Props
+
+            Data can only go downstream, not upstream, you cannot push data from a second component to the first, it must come from the first component to the second component. While we could only access the third and second components through the first component if they are nested inside of the first component. However if we directly import the third component inside of the app.js we can access it directly. 
+
+            props are properties, which allows the dev to pass in some form of data that the first component will have access too. Props are passed in as objects. Note in react there will be two objects present due to the strict mode. You can pass in values by creating key value pairs, as it is an object. Hard coded-FirstComponent firstName="Robert". If you console.log the prop, you would see the value of will. 
+
+            You can destructure props, as well giving you access to the information. as well as using . notation to access the information. via prop.keyName this allows you to pass in the information. Beings that data flows downwards. you can add the props to the third component in the function, and then you will need to add the location that it is being called from, so ThirdComponent {FirstName = props.FirstName} Note-To access this information you will need to use {}. 
+
+            You can add props in any of the parent components to their child components there is no necessary start point. 
