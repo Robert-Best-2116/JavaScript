@@ -1,5 +1,123 @@
 
 
+What is Destructuring?
+
+    According to Mozilla, "destructuring assignment syntax is a JavaScript expression that makes it possible to unpack values from arrays or properties from objects into distinct variables" It basically means that you have a data structure, an array or object, and you want information from it to be its own variable. Before we look at how to achieve that through destructuring let us examine how we might currently perform this task. 
+
+    Initial Data structure
+
+        const person = { 
+            firstName: 'Bob', 
+            lastName: 'Marley', 
+            email: 'bob@marley.com', 
+            password: 'sekureP@ssw0rd9', 
+            username: 'barley', 
+            createdAt: 1543945177623
+        };
+        const animals = ['horse', 'dog', 'fish', 'cat', 'bird'];
+
+    Assume we want the email from te person and the first animal as stand alone variables. Before using ES6 that might look like, 
+
+        var email = person.email;
+        var firstAnimal = animals[0];
+
+    Now if we were to destructure it it would look like this 
+
+        const {email} = person;
+        const [firstAnimal] = animals;
+        console.log(email);
+        console.log(firstAnimal);
+
+    In order to destructure, our declarations need to match the data type to the right of the equal sign. For objects, the list the properties you want to copy into variables and for arrays, create variables to capture content at certain positions Interesting, but is this really useful? What happens to the original content?
+
+    To answer the first question we will demonstrate with more code, the second one is easy-nothing it is unchanged. Destructuring does not destroy the original data, it makes copies of it and sets new variables. 
+
+    Let us expand on our previous examples say we want the email and password from the person object and the first three values from animals 
+
+        var email = person.email;
+        var password = person.password;
+        var firstAnimal = animals[0];
+        var secondAnimal = animals[1];
+        var thirdAnimal = animals[2];
+
+    While not pretty it does have the benefit of being verbose. We know exactly where each variable is receiving its information, but with destructuring its simpler. 
+
+        const { email, password } = person;
+        const [firstAnimal, secondAnimal, thirdAnimal] = animals;
+
+    Destructuring allows us to extract multiple items at once, we get all of the same data while being more succinct 
+
+
+    Name Conflicts 
+
+        What if the current scope already has a variable of the same name of the property that your extracting from the object? 
+
+            const password = '12345';
+            const { password } = person;
+
+        This will certainly cause conflict. Because password exists before destructuring and is a const this will throw an error, SyntaxError: Identifier 'password' has already been declared. 
+
+        so what else can we do? 
+
+            const hashedPassword = person.password; ??
+
+            const { hashedPassword } = person; ??
+
+        The first example will work but is unnecessary. The second one wont throw an error but nor will it contain the information we need. When destructuring from objects the property names must be matched exactly, so in this example, because hashedPassword does not exist in our person object it will be undefined. 
+
+        However there is a work around. What you will want to do is specify what you want to destructure while also supplying a new variable name. 
+
+            const password = '12345';
+            const { password: hashedPassword } = person;
+
+        Specifying the property name, password, will access the value of that property on our object, the colon : after the property name followed by your new variable redirects the value of the password t obe helled in hashedPassword thereby eliminating the aforementioned identifier conflict. 
+
+
+    Nested Destructuring
+
+        Often we'll be working with much more complex content and we want to take advantage of destructuring these nested structures. For this next example we'll modify our person object to have an array of address. 
+
+            const person = {
+            firstName: 'Bob',
+            lastName: 'Marley',
+            email: 'bob@marley.com',
+            password: 'sekureP@ssw0rd9',
+            username: 'barley',
+            addresses: [
+                {
+                address: '1600 Pennsylvania Avenue',
+                city: 'Washington, D.C.',
+                zipcode: '20500',
+                },
+                {
+                address: '221B Baker St.',
+                city: 'London',
+                zipcode: 'WC2N 5DU',
+                }
+            ],
+            createdAt: 1543945177623
+            };
+
+
+        If we want the individual addresses as variables we could certainly destructure addresses, then destructure each address 
+
+            const { addresses: [whiteHouse, sherlock] } = person;
+
+
+        Note that a variable address is no longer created but we can reference each address by the variable name listed at those positions. What if we wanted to skip the first address and only want the city of the second but using an alt variable name? 
+
+            const { addresses: [ , { city: london }] } = person;
+            console.log(london);
+            // => London
+
+        Leaving an "empty" first position with ust a comma allows us to skip that index, and destructuring from the second address. This can be done to any depth, just be sure your content actually exists. If you skip so many addresses or values that the final position doesn't exist, then it will produce an error. Attempting to destructure from undefined or null throws a type error. 
+
+        Destructuring simplifies extracting information from objects and arrays, allowing for a cleaner, more succinct codebase. 
+        
+
+
+        
+
 Rest/Spread 
 
     ES6  provides us with a new operator, ..., that is context depenedent. Its purpouse is to capture the rest of a data set or to spread content of an existing structure 
