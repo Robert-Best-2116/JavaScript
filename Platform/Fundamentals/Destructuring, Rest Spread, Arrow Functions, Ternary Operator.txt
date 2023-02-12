@@ -1,0 +1,349 @@
+
+
+What is Destructuring?
+
+    According to Mozilla, "destructuring assignment syntax is a JavaScript expression that makes it possible to unpack values from arrays or properties from objects into distinct variables" It basically means that you have a data structure, an array or object, and you want information from it to be its own variable. Before we look at how to achieve that through destructuring let us examine how we might currently perform this task. 
+
+    Initial Data structure
+
+        const person = { 
+            firstName: 'Bob', 
+            lastName: 'Marley', 
+            email: 'bob@marley.com', 
+            password: 'sekureP@ssw0rd9', 
+            username: 'barley', 
+            createdAt: 1543945177623
+        };
+        const animals = ['horse', 'dog', 'fish', 'cat', 'bird'];
+
+    Assume we want the email from te person and the first animal as stand alone variables. Before using ES6 that might look like, 
+
+        var email = person.email;
+        var firstAnimal = animals[0];
+
+    Now if we were to destructure it it would look like this 
+
+        const {email} = person;
+        const [firstAnimal] = animals;
+        console.log(email);
+        console.log(firstAnimal);
+
+    In order to destructure, our declarations need to match the data type to the right of the equal sign. For objects, the list the properties you want to copy into variables and for arrays, create variables to capture content at certain positions Interesting, but is this really useful? What happens to the original content?
+
+    To answer the first question we will demonstrate with more code, the second one is easy-nothing it is unchanged. Destructuring does not destroy the original data, it makes copies of it and sets new variables. 
+
+    Let us expand on our previous examples say we want the email and password from the person object and the first three values from animals 
+
+        var email = person.email;
+        var password = person.password;
+        var firstAnimal = animals[0];
+        var secondAnimal = animals[1];
+        var thirdAnimal = animals[2];
+
+    While not pretty it does have the benefit of being verbose. We know exactly where each variable is receiving its information, but with destructuring its simpler. 
+
+        const { email, password } = person;
+        const [firstAnimal, secondAnimal, thirdAnimal] = animals;
+
+    Destructuring allows us to extract multiple items at once, we get all of the same data while being more succinct 
+
+
+    Name Conflicts 
+
+        What if the current scope already has a variable of the same name of the property that your extracting from the object? 
+
+            const password = '12345';
+            const { password } = person;
+
+        This will certainly cause conflict. Because password exists before destructuring and is a const this will throw an error, SyntaxError: Identifier 'password' has already been declared. 
+
+        so what else can we do? 
+
+            const hashedPassword = person.password; ??
+
+            const { hashedPassword } = person; ??
+
+        The first example will work but is unnecessary. The second one wont throw an error but nor will it contain the information we need. When destructuring from objects the property names must be matched exactly, so in this example, because hashedPassword does not exist in our person object it will be undefined. 
+
+        However there is a work around. What you will want to do is specify what you want to destructure while also supplying a new variable name. 
+
+            const password = '12345';
+            const { password: hashedPassword } = person;
+
+        Specifying the property name, password, will access the value of that property on our object, the colon : after the property name followed by your new variable redirects the value of the password t obe helled in hashedPassword thereby eliminating the aforementioned identifier conflict. 
+
+
+    Nested Destructuring
+
+        Often we'll be working with much more complex content and we want to take advantage of destructuring these nested structures. For this next example we'll modify our person object to have an array of address. 
+
+            const person = {
+            firstName: 'Bob',
+            lastName: 'Marley',
+            email: 'bob@marley.com',
+            password: 'sekureP@ssw0rd9',
+            username: 'barley',
+            addresses: [
+                {
+                address: '1600 Pennsylvania Avenue',
+                city: 'Washington, D.C.',
+                zipcode: '20500',
+                },
+                {
+                address: '221B Baker St.',
+                city: 'London',
+                zipcode: 'WC2N 5DU',
+                }
+            ],
+            createdAt: 1543945177623
+            };
+
+
+        If we want the individual addresses as variables we could certainly destructure addresses, then destructure each address 
+
+            const { addresses: [whiteHouse, sherlock] } = person;
+
+
+        Note that a variable address is no longer created but we can reference each address by the variable name listed at those positions. What if we wanted to skip the first address and only want the city of the second but using an alt variable name? 
+
+            const { addresses: [ , { city: london }] } = person;
+            console.log(london);
+            // => London
+
+        Leaving an "empty" first position with ust a comma allows us to skip that index, and destructuring from the second address. This can be done to any depth, just be sure your content actually exists. If you skip so many addresses or values that the final position doesn't exist, then it will produce an error. Attempting to destructure from undefined or null throws a type error. 
+
+        Destructuring simplifies extracting information from objects and arrays, allowing for a cleaner, more succinct codebase. 
+        
+
+
+        
+
+Rest/Spread 
+
+    ES6  provides us with a new operator, ..., that is context depenedent. Its purpouse is to capture the rest of a data set or to spread content of an existing structure 
+
+    Destructuring
+
+        Now that we understand usuing rest and spread, we can work it into our destructuring. Remembering our array example from the destructuring chapter we wanted to extract the first couple animals from our list. 
+
+            const animals = ['horse', 'dog', 'fish', 'cat', 'bird'];
+            const [firstAnimal, secondAnimal] = animals;
+
+        If we want the remaning animals, we use a rest pattern at the end of the assignment. 
+
+            const [firstAnimal, secondAnimal, ...otherAnimals] = animals;
+            otherAnimals
+            // => ['fish', 'cat', 'bird']
+
+    Objects 
+
+        Can we do the same with objects? Yes, While object spread came about a few years after ES6 it esems like a good idea to examine it here. 
+
+            const person = {
+            firstName: 'Bob',
+            lastName: 'Marley',
+            email: 'bob@marley.com',
+            password: 'sekureP@ssw0rd9',
+            username: 'barley',
+            addresses: [
+                {
+                address: '1600 Pennsylvania Avenue',
+                city: 'Washington, D.C.',
+                zipcode: '20500',
+                },
+                {
+                address: '221B Baker St.',
+                city: 'London',
+                zipcode: 'WC2N 5DU',
+                }
+            ],
+            createdAt: 1543945177623
+            };
+
+        Grabbing firstName and lastName from person is easy, along with assigning all other properties to a "catchall" 
+
+            const { firstName, lastName, ...attributes } = person;
+
+        Usuing spread we can quickly make complete copies of objects or arrays. 
+
+            const personCopy = { ...person };
+
+        There are some limitations, the copy is shallow, so any complex or nested structures with objects refrences will still point to the same object. As they are the same place in memory. 
+
+            const personCopy = { ...person };
+            personCopy === person
+            // => false
+            personCopy.addresses === person.addresses
+            // => true
+
+
+Arrow Functions 
+
+    Understanding and utilizing anonymous functions is important to becoming a skilled JS dev. An anonymous function is simply a function without a name, ES6 introduces a new shortened syntax for writing anonymous functions. That is the focus of this chapter. 
+
+    Function Keyword 
+
+        Consider this sayHello function assigned to a variable. 
+
+            var sayHello = function(name) {
+            console.log('Hello ' + name);
+            };
+
+        Utilizing ES6 arrow functions, colloquially fat arrow functions, we can rewrite this function as such 
+
+            const sayHello = (name) => {
+            console.log(`Hello ${name}`);
+            };
+
+        Notice that we have omitted the function keyword and now have an arrow => pointing to the function body. Intresting but why other than less typing? 
+
+        For simple methods we can refine the example further. Single parameters don't need parentheses and with the function body being a single statement we an remove the curly braces 
+
+            const sayHello = name => console.log(`hello ${name}`); 
+
+        Concise. more complex functions will need a more comleete body ({}) and multiple parameters will require parentheses, Another benefit of utilizing arrow functions for simple expression is implicit returns. 
+
+            var square = function(n) {
+            return n * n;
+            };
+
+        Will become 
+
+            const square = n => n * n;
+
+        Traditional functions require explicit returns, such as in the first square, with arrow functions the result of our expression n * n is implicitly returned to the caller. 
+
+        Arrow functions give us the ability to shorten the syntax of the retuning object as well. However there is one piece of syntax we need to return an object. Lets look at the example below. 
+
+            // longhand notation to return an object
+            // NOTE: first set of brackets are defining the function body
+            // and the second set of brackets are to create the object literal
+            const returnObjLonghand = () => {
+                return { 
+                    firstName: 'John',
+                    lastName: 'Wick'
+                }
+            }
+            /**
+            * The example below wouldn't work because the 
+            * brackets are interpreted as opening the body of the 
+            * function rather than brackets to create an object literal 
+            */
+            const returnObj = () => { firstName: 'John', lastName: 'Wick' }
+            // surrounding the implicit return with parentheses solves the problem
+            const returnObjFixed = () => ({ firstName: 'John', lastName: 'Wick' });
+
+
+        Context 
+
+            Fancy Sytax isn't the only change with arrow functions. They also inherit context from the parent scope. To demostrate this let's create a card Deck class. 
+
+                class Deck {
+                    constructor() {
+                        const suits = ['Diamond', 'Heart', 'Spade', 'Club'];
+                        const faces = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
+                        const deck = [];
+                        for (const suit of suits) {
+                        for (const face of faces) {
+                            deck.push(this.createCard(suit, face));
+                        }
+                        }
+                        this.deck = deck;
+                    }
+                    createCard(suit, face) {
+                        return face + " of " + suit;
+                    }
+                }
+
+            We'll start refactoring for a more functional approach using forEach, but continue usuing traditional anonymous functions. 
+
+                class Deck {
+                    constructor() {
+                        const suits = ['Diamond', 'Heart', 'Spade', 'Club'];
+                        const faces = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
+                        const deck = [];
+                        suits.forEach(function(suit) {
+                        faces.forEach(function(face) {
+                            deck.push(this.createCard(suit, face));
+                        });
+                        });
+                        this.deck = deck;
+                    }
+                    createCard(suit, face) {
+                        return face + " of " + suit;
+                    }
+                }
+
+            Creating a deck will now result in a TypeError cannot read property createCard of undefined because this. in our anonymouse function doesn't have the same context as our loops. 
+
+                class Deck {
+                    constructor() {
+                        const suits = ['Diamond', 'Heart', 'Spade', 'Club'];
+                        const faces = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
+                        const deck = [];
+                        suits.forEach(suit => {
+                        faces.forEach(face => {
+                            deck.push(this.createCard(suit, face));
+                        });
+                        });
+                        this.deck = deck;
+                    }
+                    createCard(suit, face) {
+                        return face + " of " + suit;
+                    }
+                    }
+
+            Arrow functions don't create their own context, it looks to the enclsing scope for that information. Therefore this should now refer to the Deck instance, which has a create card method.
+
+        Conclusion 
+
+            Arrow functions provide a simpler syntax with implicit returns for succinct expressions. Additionaly they inherit context from parent scopes. While this is great much of the time, there are instances when you want context to change so be aware of how an arrow function might affect your code. 
+
+
+
+
+    Ternary Operator
+
+        The MDN Docs has a solid definition of what a ternary operator is : 
+
+            The conditional (ternary) operator is the only JavaScript operator that takes three operands: a condition followed by a question mark ?, then an expression if truthy followed by a colon: and finally the expression to execute if the condition is falsy. This operator is frequently used as a shortcut for the if statement. 
+
+        Essentially, a ternary operator is a short version of an if statement. Let's go over the difference between the two with a couple basic examples: 
+
+        Lets create a demo function to determine if i can afford something. 
+
+            if statement
+
+                let canAfford = (itemPrice, accountBalance) => {
+                    if (itemPrice > accountBalance) {
+                        return `Cannot afford you are $${itemPrice - accountBalance} short `;
+                    } else {
+                        return `"Can afford!`";
+                    }
+                };
+
+            Ternary statement 
+
+                let canAfford = 9itemPrice, accountBalance) => {
+                    return itemPrice > accountBalance
+                    ? `Cannot afford you are $${itemPrice - accountBalance} short `
+                    : "Can Afford";
+                }
+
+        If we invoke either one of these functions, they will return the same result. The only difference is the ternary statement is shorter. 
+
+    
+    Special Note 
+
+        Take care when nesting ternary statements, as they can become unwieldy and unreadable, 
+
+            ex 
+
+                const myVar = 10 < 20 
+                ? 5 > 10
+                    ? true 
+                    : false 
+                :false 
+
+        Imagine coming back to read that. Itd be terrible. 
+
