@@ -1,0 +1,38 @@
+
+
+What is React? 
+
+    A JavaScript Library for building user interfaces. 
+
+    React Is going to be the code that runs on our user's browser, displaying the information we want them to see. Reacting to user input, being responsible for not just the look and feel our our web app but most of its interactivity as well.
+
+    Where does React come from?
+
+        React is an open-source project maintained by facebook and they released it under the permissive MIT license. Along with Angular and Vue, it is one of the most popular front end libraries being used today. 
+
+    Why should you learn React? 
+
+        React can be used to build a single page application or SPA. Which will make our website feel more responsive by eliminating page loads for our user. 
+        React isn't opinionated about what technology we use with it. We can choose the libraries we use for HTTP requests, front end routing, styling etc.
+        React doesn't prevent us from using DOM manipulation already built into JavaScript
+        React is popular, with more downloads per week on NPM than for Angular or Vue
+
+    
+Using React 
+
+    React works by using objects called components. These components can be created in a variety of ways. The general idea is to break down your DOM into a variety of components that have specific behaviors. For example, if we have a form on our page, we may create a component just for that form. Then we can have a separate component just for the navbar and so on 
+
+    If we want to use React within our HTML we will need to include the React scripts in our HTML 
+
+        <script crossorigin="" src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script crossorigin="" src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script> 
+
+    With React, we can make a basic component using React.createElement. React.createElement has three main parameters. First we need to tell React what kind of element we want to create, let's say an h1 tag. Next we can pass in props. We will explore this concept in more depth later, but for the time being, let's just pass in an empty object via {}. Lastly, we will tell React.createElement the children we want to include. That is, we need to tell React the items we want within our h1 tag. This could be a string, such as "Look at me!" or another nested component via another React.createElement function call. The following is an example. 
+
+        const myReactComponent = React.createElement("h1", {}, "I am creating my first React component")
+
+    Thats it. If we wanted to create a nested React Component, we could do something like this 
+
+        const myNestedReactComponent = React.createElement("div", {}, React.createElement("p", {}, "This element is nested"))
+
+    This is great and all, but how can we actually use this in HTML? we will need to create an HTML page and tell react that we want to display the page the components in the DOM. We will do this when we create our first react component in the following lesson. 
