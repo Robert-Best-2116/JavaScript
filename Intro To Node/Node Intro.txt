@@ -1,9 +1,0 @@
-
-
-Intro to Node.js 
-
-    Node.js is a powerful and flexible JavaScript interpreter, capable of letting us run JavaScript code free from our browser, usuing our computers native hardware. Usuing Chrome's V8 engine, we can do everything from running JavaScript files directly from the terminal to traversing local files to even spinning up a web server. 
-
-
-    
-
