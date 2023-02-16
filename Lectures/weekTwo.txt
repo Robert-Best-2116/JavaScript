@@ -1,0 +1,52 @@
+
+
+2/14/23
+
+    React Overview/Theory
+
+        Note-strict mode will automatically run function. We can change that by creating an anonymous function. 
+
+        Hooks 
+
+            Hooks are a really important part of React, at its base, it is a built in function, a very common one that we will be using a lot is useState. The idea behind state is that it is a temporary value that you want to keep intact. Its similar to session but not the same. useState must be imported from react, it must also be declared. 
+
+        Props
+
+            Other components do not have access to the props that you created for one component unless they have a parent component in common. 
+
+            Props can be destructured 
+
+        UseState 
+
+            It can be used to modify current numbers or elements inside of the unit. const [valueName, setValueName] useState(startingValue) valueName is similar to a getter, setValueName is similar to a setter. 
+
+
+2/15/23
+
+    Office Hours 
+
+        Bootstrap and React 
+
+            Bootstrap is a package of classes for CSS, you can either download Bootstrap or use the CDN, it as both CSS and JavaScript. 
+
+            The CDN must be posted in the head of the HTML. Note if your using it for JS you'll need to add it to the body of the HTML at the bottom. 
+
+            Bootstrap works in grid columns it will slice everything up into 12 or a divisible of 12. The container in Bootstrap will designate how much of the screen it will take up. The way you use Bootstrap is by class="class name" it works by simply calling the class and applying the CSS already stored there. You can manually type in the class =" container" or in vs code you can simply type in .container and it will create the div for you. Note beings that it works on a grid column you can also add things in rows. 
+
+            You can also use the input:email to create it as an email input type, I would imagine that it would also work for password. 
+
+            Note-For React you will need to put className instead of class. As well as different syntax. 
+
+        Forms Basics 
+
+            Inside of our src folder, we will want to create our components folder and create our form component. While inside of VS code we can still use the emmet abbreviations to add the bootstrap classes. The two main parts of a form are the label and the input. We will need to import the form component inside of the app.js file
+
+            alt+shift+down arrow will copy and paste your current highlight below. 
+
+            You can use use state to keep the information.
+
+            A useful event handler with your forms is using onChange in order to keep track of the data that is being inputted. 
+
+            In order to use the useState you will use the on change function to use the setValueName function in the useState. you'll want to use e.target.value, so event, targeting where it happened, and value to get the actual value. 
+
+            We will want to create an event handler on our form for onSubmit. pass in an arrow function. create a variable, with our handelSubmit, we will need to use e.preventDefault();. We do this in order to save our data. as it prevents the data from refreshing. 
