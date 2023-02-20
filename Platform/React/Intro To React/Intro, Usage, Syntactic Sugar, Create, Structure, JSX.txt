@@ -36,3 +36,258 @@ Using React
         const myNestedReactComponent = React.createElement("div", {}, React.createElement("p", {}, "This element is nested"))
 
     This is great and all, but how can we actually use this in HTML? we will need to create an HTML page and tell react that we want to display the page the components in the DOM. We will do this when we create our first react component in the following lesson. 
+
+
+Syntactic Sugar 
+
+    JSX && Babel 
+
+        Fundamentally, JSX just provides syntactic sugar for the React.createElement(component, props, ...children) function.
+
+        With React.createElement, we sacrifice the well-known easy to read HTML syntax. Fortunately, JavaScript Syntax Extension or JSX, was designed to provide us with some syntactic sugar. Unfortunately, JSX isn't a language that we can just start typing and expect things to work properly. The caveat with JSX is its not a language that browsers can interpret out of the box. If we tried to run JSX code right now we would simply be blessed with an error
+
+            Uncaught SyntaxError: Unexpected Token < 
+
+        So in order to make JSX work, we need to use a transpiler, named Babel. 
+
+    Enter Babel 
+
+        Babel is a transpiler that will turn JSX into JavaScript that browsers can understand. We can add Babel into our page by using a simple script tag. 
+
+        Lets take a look at the difference between JSX and JavaScript
+
+        Raw JavaScript(React.createElement)
+
+            const App = () => {
+                // Here we simply created a function that returns a new React element
+                return React.createElement("h1", {}, "Our First React page has rendered");
+            }
+            /* 
+            *  SIDE NOTE:
+            *  Because the function above returns 1 thing, we can re-write this function in 1 line:
+            *  const App = () => React.createElement("h1", {}, "Our First React page has rendered");
+            */
+            // Then we call the function that returns the element that we intend to render.
+            ReactDOM.render(App(), document.getElementById("root"));
+            // Though, take a mental note on how we are firing the App function just like any other function
+
+
+        JSX-Babel-JavaScript
+
+            // Notice the HTML syntax here. Although this may look like regular HTML, it's actually not. 
+            ReactDOM.render(<h1>Hello!</h1>, document.getElementById("root"));
+            // **Here is what the Babel translation looks like**
+            ReactDOM.render(React.createElement("h1", null, "Hello!"), document.getElementById("root"));
+
+        Enter JSX
+
+            JSX is an optional syntax that is simply just syntactic sugar to make it so that 1. we can bring back the regular html syntax, 2. we don't have to type React.createElement() all the time, and 3 ultimately reduce the amount of code we write. Using JSX does not mean that anything is different. We are still creating React Functional components, but with JSX it looks nicer. Lets take a look but before we do remember the note in the first code snippet about the firing a function? 
+
+                const App = () => <h1>Our First React page has rendered</h1>;
+                // Notice The difference in syntax. Here we've created a React Functional Component, named App which looks 
+                // like regular HTML syntax
+                ReactDOM.render(<App></App>, document.getElementById("root"));
+                // Instead of the traditional way we are familiar with firing a function - App() -
+                // we wrap our function name in an HTML tag instead - <App /> -
+
+            In the ReactDOM.Render() method, 
+
+            The way you know the difference between a normal HTML element vs a react component is the first letter in our component name is uppercase. Note-React treats lowercase letters as DOM tags, ie if our app function name started with a lowercase ex : const app-()=> {...} React would assume that you are trying to use the native HTML tag named app. but because app is not a valid HTML tag it will throw the following error. 
+
+                Warning: The tag app; is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.
+
+            We also have the ability to self close our JSX tags. In contrast to regular HTML, self-closing elements such as HR must be explicitly closed in order for the JSX to be valid.
+
+                <!--
+                Lets look at a normal HTML input tag that is self closed. 
+                -->
+                <input .... />
+                <!-- 
+                With JSX, we can do the same thing. So, because our <App></App> tag doesn't wrap anything, we can self close it. 
+                -->
+                <script type="text/babel">
+                    ReactDOM.render(<App />, document.getElementById('root'));
+                </script> 
+
+            You can write HTML-Like code in JavaScript and then in the end babel complies that JSX down to React.createElement() calls. 
+
+
+                Important: When we create a project via create-react-app, we are installing React. Within our React files, when we write import React from 'react', we can write in JSX within that file without needing to add any extra dependencies. 
+
+                JSX in Depth- https://reactjs.org/docs/introducing-jsx.html
+
+
+Create React App 
+
+    Modern JavaScript projects typically use bundlers to build source code into production ready files. One of the most popular bundlers is called Webpack. Webpack is an amazing tool that allows us to break our apps down into smaller modules and transform them based on tools called loaders. It's a technology worth looking into, and you should spend some time working through the tutorial. https://webpack.js.org/guides/getting-started/
+
+    However, webpack is not the focus on this React workshop. We'll instead lean on the opinionated starter kit, create-react-app, which uses Webpack under the hood. 
+
+
+    create-react-app
+
+        Using this starter kit as simple as running the following command in your terminal: npx create-react-app your-project-name-here, Note- npx is the correct syntax. 
+
+        Once the project is created, we can simply navigate into the newly-created project folder and run 
+
+            npm start 
+
+        This will run the React development server and automatically open up a browser tab navigated to our app. This starter kit also comes with a live reload feature which will reload our app every time we save changes in our code. 
+
+        Resources 
+
+            https://create-react-app.dev/
+
+            https://webpack.js.org/guides/getting-started/
+
+            https://hacks.mozilla.org/2015/08/es6-in-depth-modules/
+
+            https://web.dev/learn/
+
+    
+React Folder Structure 
+
+    As a React Dev, you will generally have plenty of freedom over how to structure your own React projects. Since React is technically just a library, and thus very opinionated, you can have control over it. We will be introducing a simple very simple wa to structure your react project. This structure may not be ideal for large projects, but for smaller ones, this will do just fine. 
+
+    If you are comfortable enough with React, feel free to experiment with different folder structures. Anyways lets take a look at the current structure. 
+
+    The entry point in our React project is the src/index.js file. This file is where we call ReactDOM.render, and send in our main <App /> component (src/App.js). We will be rendering all our content from our <App /> component in the div with the id=root (in public/index.html) By importing the <App /> component, we can then put all of our React code within that component. That brings us over to src/App.js this file will be where we can actually point the rest of our code twoards. By default it looks something like this. 
+
+        import React from 'react';
+        import logo from './logo.svg';
+        import './App.css';
+        
+        function App() {
+        return (
+            <div className="App">
+            <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <p>
+                Edit <code>src/App.js</code> and save to reload.
+                </p>
+                <a
+                className="App-link"
+                href="https://reactjs.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                Learn React
+                </a>
+            </header>
+            </div>
+        );
+        }
+        export default App;
+
+    When you navigate to your project and run npm run start you will notice this page displays in your browser. However, we do not need this code for our project to work. We an delete everything within the <div className="App> The main import we need, though is import React from 'react'. By importing React, we will be able to write in JX, a syntax extension to JavaScript.
+
+    Within our src folder, let's create a new folder called "components". In this folder, we will be creating all of our components. You can think of a react component as a div that contains all of the styling and JavaScript that it needs. 
+
+    Other Resources 
+
+        https://reactjs.org/docs/introducing-jsx.html
+
+
+Composing Pages Using JSX 
+
+    JSX or JavaScript XML is an extension to JavaScript that allows us to write code that closely resembles HTML without having to make it a string. This is the preferred way to use React. 
+
+        function App() {
+            return (
+                <h1>Hello World</h1> 
+            );
+        }
+
+    Notice how above we make a react component called App and it returns what appears to be an HTML <h1> tag. Whatever content we wish to make visible on the page, we can write it using a syntax we are already familiar with. 
+
+    We are able to use any HTML tags that we are already familiar with, such as 
+
+        table, ul, li, form, input, img 
+
+    Some Rules!!!!! 
+
+        We cannot put anything we want in there. 
+
+
+    JSX Expressions must have one Parent Element 
+
+        Consider the example code 
+
+            function App() {
+                return (
+                    <h1>Hello World</h1>
+                    <p>This is a paragraph</p> 
+                );
+            }
+
+        When we are working with JSX, we need to ensure that our code being returned exists inside one JSX element, the above example will fail to compile with an error message, because it does not have a JSX fragment <> </>
+
+        Another common error you may find inside your VSCode editor stating: JSX expressions must have one parent element. 
+
+        We can either place the above elements inside of a single tag like <div> or if we don't want to introduce additional elements into the DOM, we are able to make use of a JSX "fragment" as the error message above alludes too. 
+
+            function App() {
+                return (
+                    <>
+                        <h1>Hello World</h1>
+                        <p>This is a paragraph</p>
+                    </>
+                );
+            }
+
+    JSX Versions of certain HTML Attributes 
+
+        Consider the following snippet. 
+
+            <h1 class="my-class">This is HTML</h1>
+
+        if we were to try to use this in JSX we might come up with something like..
+
+            function App() {
+                return (
+                    <>
+                        <h1 class="my-class">This is JSX</h1>
+                    </>
+                );
+            }
+
+        In ES6 we have a class keyword that refers to object oriented programming and now this attribute referring to styling. This is more than a little ambiguous, and when were working with JSX we will get an error in our console telling us 
+
+            Invalid DOM property "class" do you mean className 
+
+        When using the HTML class attribute, we will need to instead use the className attribute in JSX 
+
+            function App() {
+                return (
+                    <>
+                        <h1 className="my-class">This is JSX</h1>
+                    </>
+                );
+            }
+
+        Consider the example where we might have a form in HTML. 
+
+            <form action="/process" method="post">    
+                <div class="form-group">        
+                    <label for="email">Email:</label>        
+                    <input type="text" id="email" name="username" class="form-control" />    
+                <div>
+            </form>
+
+        If we were to write this into JSX, how would react know how to handel the for on line 3 as the HTML version of for and not the JS version of for? 
+
+            function App() {
+                return (
+                    <form action="/process" method="post">                
+                        <div className="form-group">                    
+                            <label htmlFor="email">Email:</label>                    
+                            <input type="text" id="email" name="username" className="form-control" />                
+                        </div>            
+                    </form>        
+                );
+            }
+
+        To avoid this confusion in react, where we would normally use the HTML for attribute, we will need to instead use the htmlFor attribute in JSX 
+
+        
+
