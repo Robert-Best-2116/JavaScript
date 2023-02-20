@@ -50,3 +50,27 @@
             In order to use the useState you will use the on change function to use the setValueName function in the useState. you'll want to use e.target.value, so event, targeting where it happened, and value to get the actual value. 
 
             We will want to create an event handler on our form for onSubmit. pass in an arrow function. create a variable, with our handelSubmit, we will need to use e.preventDefault();. We do this in order to save our data. as it prevents the data from refreshing. 
+
+
+2/16
+
+    Office Hours
+
+        Event Handling 
+
+            An event are things that happen to the actual HTML elements 
+
+            Event handlers typically start with "on" onClick, onHover etc, When it comes to event handling we want to capture what happens. 
+
+        Callbacks
+
+            Code runs line by line, but sometimes we want it to do something while something else is going on. Thus we use callbacks, or we use them to execute at a certain time. 
+
+            They can be anonymous functions, when using them in react, the onClick function will not have () 
+
+    
+    Lecture
+
+        MERN Speed Run 
+
+            Just gonna watch.
