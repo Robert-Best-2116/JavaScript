@@ -1,0 +1,70 @@
+
+
+2/21/23
+
+    Office Hour
+
+        Do Not Nest React Apps 
+
+        SQL vs No SQL 
+
+        SQL-Tabular/Structured, it consists of rows and columns, with different values stored, with a primary key. The power of SQL is that everything is uniform and organized.You know exactly what your going to get, and that each row will have to have each piece of information. The fall back is that if the information is not present, and is a null value, it still takes up space. 
+
+        NoSQL-(Mongo)-Semi-structured, instead of tables, it uses documents. The nice part is that you can create them with structure, and the documents can grow or shrink depending on the information required or present. Meaning that the document can save space when storing information, or expand as necessary. 
+
+        NoSql-ETL-Extract-Transform, Load-Old Way
+            When collecting data, you extract the data, transform it, ie what can i use whats good data whats bad data, and only keep the useful information, then you load it onto your database, be it a sql server, cloud or your on hand server. Meaning you only keep whats necessary. 
+
+        ELT-Extract-Load-Transform-New Way
+            Extract as muchhhhhhh data as we can, we keep all the data because data is now so cheap, now we can extract the data and load it into a S3Bucket, or something else, then when we need the information for a new project, we can transform the data into something useful. This is where non relational databases became useful. 
+
+        NoSQL-compared to traditional databases we have more flexibility in what we want to associate with our data, but we don't have to change the entire diagram or relationships of how our data interacts. 
+
+    
+    Lecture
+
+        Overview of getters and setters, basic validation, preventDefault, onChange & forms, 
+
+        Higher order function-two types, Callback Functions (A function that is being passed into another function as a parameter) and High Order Functions (a function that takes in a function as an argument or returns a function)
+
+            for loops 
+                
+                const arr = [1,2,3,4,5];
+
+                for(let i = 0; i < arr.length; i++){
+                    console.log(arr[i]);
+                }
+
+                for(let item of arr) {
+                    console.log(item);
+                }
+
+                    for of limitations, can only iterate 1 by 1 and goes through the entire array. 
+
+        https://www.freecodecamp.org/news/4-main-differences-between-foreach-and-map/
+
+
+        Three main higher order functions 
+
+            For Each, 
+                It will apply a function to each item inside of an array(note it must be an array function), it must take in a call back function, you can also pass in a second parameter to represent the index value of the array. For each does not return a value. 
+                
+                    arr.forEach(item, idx) => console.log(item, inx);
+
+            Map 
+                Creates a new/copy of the array, and returns it. It also allows you to chain other methods for you to use, such as reduce or other functions. 
+
+                    const newArr = arr.map((item) => item * 2 );
+                    console.log(newArr);
+
+            Filter
+                Goes through our array, you can pass into up to three parameters, give it some form of conditions, and it will return to us an array where that filter is true. 
+
+                    const arr = [2,4,6,8,10];
+                    const newArr = arr.filter((item) => item > 5);
+                    console.log(newArr);
+
+    
+        Lifting State 
+
+            When using map in React it wants to be able to identify an index for each instance in an array. It wants to have a unique identifier for each item so that it can be changed or edited. So that you know which component you are changing. We will be assigning a unique ID to each component. The power of React is that everything can be used over and over again with components. Beings that data is only passed downwards in React we will need to lift it up to the parent component so that way siblings components can share information. You remove the variable from the child element, and paste it into the function App(), import useState from react. You will also need to pass in the information to the other sibling element, and pass in prop to the siblings in both the component as well as the App.js you can also just pass in the prop name into the siblings, in the following way {propName, otherProp}, and we will not need to destructure it. 

@@ -1,0 +1,72 @@
+
+
+Synthetic Events 
+
+    React uses a custom approach to adding event listeners to our elements by wrapping the browsers native elements and applying its own even system called "Synthetic Events". There are a few key things to kep in mind about React's Synthetic event system: 
+
+        The event names are camelCase
+        Returning false will not work with any event to prevent default browser behaviors, you will need to do this manually, call event.stopPropagation() or event.preventDefault() as necessary. 
+        Events cannot be called asynchronously because of how React "pools" synthetic events. 
+
+    So how do we add events to our app? The simplest event we can choose is the user clicking on something in our app, perhaps a button?
+
+        import React from 'react';
+        import logo from './logo.svg';
+        import './App.css';
+            
+            
+        function App() {
+            return (
+                <button onClick={ ()=> alert("This button has been clicked!") }>Click Me</button>
+            );
+        }
+            
+        export default App;
+
+    When we test out the following code snippet, the button will now react to being clicked by alerting that "This button has been clicked!" 
+
+    While onClick is an event we will use quite often, there are many others we might want to use. These are a few of the most common ones 
+
+        onChange-an event that runs when a form input is changed
+        onSubmit-an event that runs when a form is submitted
+        onFocus-an event that is run when an element is given(clicked on or tabbed to)
+        onBlur-an event that is run when an element looses focus(the user moves away from the element)
+
+    For a larger list!!!
+
+        https://reactjs.org/docs/events.html#supported-events
+
+    Other Reading! 
+
+        https://reactjs.org/docs/handling-events.html
+
+
+Hooks!
+
+    Hooks are now an extremely important part of React, and understanding them is important to your growth as a React dev. So lets dig into them right away. 
+
+    From the official React docs, we can read: 
+
+        Hooks solve a wide variety of seemingly unconnected problems in React, that we've encountered over five years of writing and maintaining tens of thousand of components. 
+
+        To solve these problems, Hooks let you use more of React's features without classes. Conceptually, React components have always been closer to functions. Hooks embrace functions, but without sacrificing the practical spirit of React. Hooks provide access to imperative escape hatches and don't require you to learn complex functional or reactive programming techniques. 
+
+    A hook, generally speaking, is just a function, either built-in or custom, that allows you to "hook" in or use a certain piece of React functionality inside of your functional components. 
+
+    Since React functional components are just plain JavaScript functions, its not possible to persist state (data) in local variables, as those are initialized every time the function is re-rendered/evaluated. Because of this shortcoming, React provides several hooks to maintain state for our functional components. (State refers to data that is specific to a rendered component and is stored in memory. This data is maintained even after a component has been completely rendered/evaluated.)
+
+    React provides a few built-in Hooks like useState and useEffect that we will use regularly, You can also create your own Hooks, but we wont get into that 
+
+        Official Documentation 
+
+            https://reactjs.org/docs/hooks-intro.html
+
+
+
+Using useState 
+
+    So far, our React Components have been displaying information, much of which has been given to them through props. As we make more complicated React apps some of the components we write will need to be able to store their own information. 
+
+    In a functional component, we do not have the ability to save data/state across re-renders of the component natively. The way components in react are able to hold onto their information is inside of variables we will be calling state. 
+
+    
