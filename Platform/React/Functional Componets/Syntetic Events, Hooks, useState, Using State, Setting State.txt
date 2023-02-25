@@ -69,4 +69,128 @@ Using useState
 
     In a functional component, we do not have the ability to save data/state across re-renders of the component natively. The way components in react are able to hold onto their information is inside of variables we will be calling state. 
 
-    
+    To add the functionality to use state in our functional components, we will need to use the React hook useState. With useState, we can define and set the state (persistent data) of the functional component. 
+
+    useState, is a function that we import from the react library. Once imported we can use it as many (or as few) times as we would like depending on the information that we would like to keep track of inside this component. 
+
+    We will need the following import at the top of any component that needs to use state: 
+
+        import React, { useState } from 'react'; 
+
+    When invoking useState you pass the initial state (value) into this function and it returns a two element array. Using destructuring of that array, we can create two local variables that we can use anywhere im our component. The first element of the returned array will be used to get(show) the current state value (not necessarily the initial state). The second array element is a function used to update this value. These are sometimes referred to as getters and setters. 
+
+    Best practices tell us to deconstruct the returned array into two local variables. The following is an example of using an object with a single key/value pair. (clickCount: 0) as the initial state. 
+
+        import React, { useState } from 'react';
+            
+        const Counter = props => {
+            const [state, setState] = useState({
+                clickCount: 0
+            });
+            
+            return(
+                <div>{ state.clickCount }</div>
+            );
+        }
+            
+        export default Counter;
+
+    We have just defined two variables: state and setState by calling the useState method. We can now access the current state value via state and then change the value saved in the state via and then change the value saved in state via setState. If we were to expand upon this example to include setting state: 
+
+        import React, { useState } from 'react';
+            
+        const Counter = props => {
+            const [state, setState] = useState({
+                clickCount: 0
+            });
+        
+            const handleClick = () => {
+                setState({                   // the setter will update the value held in state
+                    clickCount: state.clickCount + 1
+                });
+            }
+        
+            return (
+                <div>
+                    { state.clickCount }      // displaying the current value held in our state object
+                    <button onClick={ handleClick }>Click Me</button>
+                </div>
+            );
+        }
+            
+        export default Counter;
+
+    Whenever we click the button, we are setting the state by incrementing the clickCount property. Now we can use state within a function component. 
+
+        Note: When invoking useState, we do not need to pass in the object. We can just pass in a primitive value, number, string boolean, etc, and then update it accordingly. 
+
+    You will more commonly see useState holding a primitive value and implementing it as the following example 
+
+        import React, { useState } from 'react';
+            
+        const Counter = props => {
+            const [count, setCount] = useState(0);   // use descriptive names for your destructured variables
+        
+            const handleClick = () => {
+                setCount(count + 1);
+            }
+        
+            return (
+                <div>
+                    { count }
+                    <button onClick={ handleClick }>Click Me</button>
+                </div>
+            );
+        }
+            
+        export default Counter;
+
+    Note- The names of the variable follow a generally accepted camelCase naming convention. 
+
+        The getter name should describe the data it is holding
+        the setter is named as the same as the getter with the prefix of set. 
+
+    Again, it is not just a rule, but just a convention to understand the data, type and purpose of the variable as easily possible.
+
+
+Using State, Setting State 
+
+    State is not a "one size fits all" utility, sometimes the problem we are solving may change how we instantiate our initial state values. Let's look at an example below: 
+
+        const [state, setState] = useState({ // seems like a lot of extra syntax just to instantiate
+            name: ""                         // one piece of state that's holding an empty string, doesn't it?
+        });
+        const onClick = () => {
+            setState({name: "Scary Terry"}) // here we have to go inside our object, get to our appropriate key,
+        }                                   // THEN change the value
+        console.log(state.name);
+
+    Perhaps if our state was holding several unique pieces of changeable data, like name, age, skills, then an object to collet it all together would make a great, organized solution! However, with only a name to affect, we can simplify our approach 
+
+        const [name, setName] = useState(""); // we don't have to stick with only state and setState as variable names
+        const onClick = () => {
+            setName("Scary Terry") // no layers to peel back to get to the value we want to change!
+        }
+        console.log(name); // now "state" represents only the string value
+
+
+Setters Are Asynchronous Functions 
+
+    If you try to run these examples, you may notice that the values from the console.log do not seem to match with the values you expect. You will be given the previous value of state and not what you expected the current value to be.
+
+    This is caused by what is known as asynchronous functions, and setState methods are asynchronous.
+     
+     Asynchronous means that this function will start its work, but then step out of the way for the following commands to continue processing without being held up by a potentially slow asynchronous function. Once all other work is completed, the asynchronous function can return with its own completed work. 
+
+    In the event of our setter function, the getter a synchronous command will return the original value, prior to the setters new value, until all of the current synchronous work like console.log() has completed. After all synchronous work is completed, the setter will complete its work of setting the new value in state. 
+
+    This is Intentional!
+
+    Although there are many reasons for it, just known that is is mainly because state changes cause the component to re-render and so having multiple pieces of state potentially change in a single function could cause catastrophic performance and data loss if they didn't allow for all state changes to be completed at one time at the end of a function or block of code. 
+
+    Remember that you can console.log() the value that you are setting in state just as easily as you an use it to set the value in state. Just don't console.log() the getter unless you want the old value. 
+
+        Additional Reading 
+
+            https://reactjs.org/docs/react-component.html#setstate
+

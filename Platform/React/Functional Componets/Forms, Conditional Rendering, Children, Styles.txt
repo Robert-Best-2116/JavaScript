@@ -1,0 +1,379 @@
+
+
+Forms!
+
+    We don't usually get very far with our website before we eventually need to write some forms. Forms are our opportunity to have a conversation with our users, and so represent one of the most important elements of our application. There are two basic ways to deal with forms in React: 
+
+        1. State: Track input values as a piece of your state, updating them on change events and rendering them back out to the UI. These are called controlled components. 
+
+        2. Refs: Attach a pointer to DOM nodes like inputs and textareas and reach out to inspect their values once our form is submitted, these are called uncontrolled components. https://reactjs.org/docs/uncontrolled-components.html
+
+            import React, { useState } from  'react';
+                
+            const UserForm = (props) => {
+                const [username, setUsername] = useState("");
+                const [email, setEmail] = useState("");
+                const [password, setPassword] = useState("");  
+                
+                const createUser = (e) => {
+                    // we must prevent the default refresh of the browser to keep our state from being reset
+                    e.preventDefault();
+                
+                    // create a javascript object to hold all of the values
+                    const newUser = { 
+                        username: username, 
+                        email: email, 
+                        password: password 
+                    };
+                    console.log("Welcome", newUser);
+                };
+                
+                return(
+                    <form onSubmit={ createUser }>
+                        <div>
+                            <label>Username: </label> 
+                            <input type="text" onChange={ (e) => setUsername(e.target.value) } />
+                        </div>
+                        <div>
+                            <label>Email Address: </label> 
+                            <input type="text" onChange={ (e) => setEmail(e.target.value) } />
+                        </div>
+                        <div>
+                            <label>Password: </label>
+                            <input type="text" onChange={ (e) => setPassword(e.target.value) } />
+                        </div>
+                        <input type="submit" value="Create User" />
+                    </form>
+                );
+            };
+                
+            export default UserForm;
+    
+    Notice how we're using two new Synthetic Events, onChange and onSubmit.
+
+onChange 
+
+    This event is run whenever the value in the input is changed. When we use it we need to accept a parameter into our function, e. the e. variable contains all sorts of nifty event information, where e.target is the target of the event, in other words the <input /> element and the e.target.value is the information currently typed into the input.
+
+
+onSubmit
+
+    This event runs when the user submits the form by clicking on the submit button. Like the onChange it will also need to accept an e parameter that is also full of event information. This time we want to prevent the default form behavior by using e.preventDefault(). The default form behavior of a web browser is submitting the information to the route in the form's action attribute which causes a page to load. Page loads will reset state and lose the data we just collected so we want to handle this information ourselves by preventing the default behavior. 
+
+createUser
+
+    When the onSubmit event occurs, we have written a function that handles what to do with the form data. The form data for each input is being held in state using separate hooks. If we want to bring all of the fields together, we can declare a new object and put the variables in it. To make this a little more convenient, we can make use of Property Value Shorthand a new ES6 notation. (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#New_notations_in_ECMAScript_2015)
+
+    Instead of writing 
+
+        const newUser = { username: username, email: email, password: password };
+
+    We can just write 
+
+        const newUser = { username, email, password };
+
+    If we are alright with having the key receive the sane me as our variables. 
+
+
+Cleaning Up 
+
+    Notice how after submitting this form, the current values in the form inputs just stick around. Because we haven't let the page reload (as we prevented default), this is the expected behavior. In fact this is a good thing as when we add in validations to our form later, if the form happens to be invalid then the information the user typed in will still be there for them to fix instead of having to remember what they had typed in before. 
+
+    If we want to clear the form after it's been submitted, we can do it with some small modifications to our code above. On each of the inputs, we will now include a value attribute that we set equal to the corresponding useState variable. 
+
+
+        <input type="text" onChange={ (e) => setUsername(e.target.value) } value={ username } />
+
+    We've now applied what's known as a two-way data binding, and whatever value is currently in the username state will match what is in the form. What that means for us that inside the createUser function we can set username back to an apprpriate starting value by using the setter/setState method and its value will be mirrored in the value we see in our input. 
+
+    inside of the createUser function
+        setUsername("");
+
+
+The complete code using the two-way data binding/cleaning up and ES6 Shorthand notation. 
+
+    UserForm.js 
+
+        import React, { useState } from  'react';
+    
+        const UserForm = (props) => {
+            const [username, setUsername] = useState("");
+            const [email, setEmail] = useState("");
+            const [password, setPassword] = useState("");  
+            
+            const createUser = (e) => {
+                // we must prevent the default refresh of the browser to keep our state from being reset
+                e.preventDefault();
+                
+                // shorthand ES6 syntax for building an object - see notes above
+                const newUser = { username, email, password };
+                console.log("Welcome", newUser);
+                setUsername("");
+                setEmail("");
+                setPassword("");
+            };
+            
+            return(
+                <form onSubmit={ createUser }>
+                    <div>
+                        <label>Username: </label> 
+                        <input type="text" value={username} onChange={ (e) => setUsername(e.target.value) } />
+                    </div>
+                    <div>
+                        <label>Email Address: </label> 
+                        <input type="text" value={email} onChange={ (e) => setEmail(e.target.value) } />
+                    </div>
+                    <div>
+                        <label>Password: </label>
+                        <input type="text" value={password} onChange={ (e) => setPassword(e.target.value) } />
+                    </div>
+                    <input type="submit" value="Create User" />
+                </form>
+            );
+        };
+            
+        export default UserForm;
+
+
+Conditional Rendering 
+
+    Let's say we want to render something in the DOM thats based on some other value. Using the previous example from the form, we want to have output after the form was submitted. There are several ways that we can accomplish this task. and so we will go over a few common methods.
+
+    Using a function to return the text you would like displayed
+
+        At the top of our component, let's say that we want to have an <h3> that will say "Welcome please submit the form." if the form has not been submitted. After we click submit, we want to change the text to say "Thank you for submitting the form!".
+
+        we can add some logic in our component to take care of this. We will need to add a submit button and a function that will run onSubmit (we'll call it createUser). We will also add a new piece of state that will hold either true or false, depending on if the createUser function has been invoked.
+
+        The formMessage function will be run every time the component is re-rendered(every time state is changed) and it will evaluate if hasBeenSubmitted is true or false. Based on the value in state the appropriate message text will be returned and placed inside the <h3> tags. 
+
+            import React, { useState } from 'react';
+                
+                
+            const UserForm = (props) => {
+                const [username, setUsername] = useState("");
+                const [email, setEmail] = useState("");
+                const [password, setPassword] = useState("");
+                const [hasBeenSubmitted, setHasBeenSubmitted] = useState(false);  // default value of false
+                
+                const createUser = (e) => {
+                    // we must prevent the default refresh of the browser to keep our state from being reset
+                    e.preventDefault();
+                    
+                    // shorthand ES6 syntax for building an object
+                    const newUser = { username, email, password };
+                    console.log("Welcome", newUser);
+                    setUsername("");
+                    setEmail("");
+                    setPassword("");
+                
+                    // updating state will change the message to be displayed in the form
+                    setHasBeenSubmitted( true );
+                };
+                
+                const formMessage = () => {
+                    if( hasBeenSubmitted ) {
+                    return "Thank you for submitting the form!";
+                } else {
+                    return "Welcome, please submit the form";
+                }
+                };
+                
+                return (
+                    <form onSubmit={ createUser }>
+                        <h3>{ formMessage() }</h3>
+                        <div>
+                            <label>Username: </label> 
+                            <input type="text" value={username} onChange={ (e) => setUsername(e.target.value) } />
+                        </div>
+                        <div>
+                            <label>Email Address: </label> 
+                            <input type="text" value={email} onChange={ (e) => setEmail(e.target.value) } />
+                        </div>
+                        <div>
+                            <label>Password: </label>
+                            <input type="text" value={password} onChange={ (e) => setPassword(e.target.value) } />
+                        </div>
+                        <input type="submit" value="Create User" />
+                    </form>
+                );
+            };
+                
+            export default UserForm;
+
+        Using Ternary Operators 
+
+            Ternary Operators offer a better way to conditionally render an element. For a Ternary refresher check out the MDN Docs-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator. The biggest advantage to us using a ternary operator here, is that we can replace the formMessage function we wrote with some code that can go directly into our JSX. 
+
+                {/* rest of component removed for brevity */}
+                    
+                {/* this functionality can be repeated for each form input */}
+                <form onSubmit={ createUser }>
+                    {
+                        hasBeenSubmitted ? 
+                        <h3>Thank you for submitting the form!</h3> :
+                        <h3>Welcome, please submit the form.</h3> 
+                    }
+                    <div>
+                        <label>Username: </label> 
+                        <input type="text" onChange={ (e) => setUsername(e.target.value) } />
+                    </div>
+                    {/* Email and Password inputs removed for brevity */}
+                </form>
+                    
+                {/* rest of component removed for brevity */}
+
+            Try using ternary operators when you can, as they are very useful and can make your life as a React dev much easier. 
+
+        Handling Validations 
+
+            We could also use ternaries to display potential validation messages to our users, even offering them feedback while they are filling out the form. Consider the following component. 
+
+                const MovieForm = ( ) => {
+                    const [title, setTitle] = useState("");
+                    const [titleError, setTitleError] = useState("");
+                    
+                    const handleTitle = (e) => {
+                        setTitle(e.target.value);
+                        if(e.target.value.length < 1) {
+                            setTitleError("Title is required!");
+                        } else if(e.target.value.length < 3) {
+                            setTitleError("Title must be 3 characters or longer!");
+                        } else {
+                            // an empty string is considered a "falsy" value
+                            setTitleError("");
+                        }
+                    }
+                    
+                    {/* this functionality can be repeated for each input needing validation */}
+                    
+                    return (
+                        <form onSubmit={ (e) => e.preventDefault() }>
+                            <div>
+                                <label>Title: </label>
+                                <input type="text" onChange={ handleTitle } />
+                                {
+                                    titleError ?
+                                    <p>{ titleError }</p> :
+                                    ''
+                                }
+                            </div>
+                            {
+                                titleError ?
+                                <input type="submit" value="Create Movie" disabled /> : 
+                                <input type="submit" value="Create Movie" />
+                            }
+                        </form>
+                    );
+                }
+
+            Here we can make use of the fact that JS will treat an empty string as being a falsy value to make our ternaries easier to write. In this case, we disable the submit button until the form is valid by using ternaries. If the titleError state is set to an empty string, it will take the else case, which removes the disabled attribute from the button. 
+
+Children 
+
+    Components can also have children. Children of components are those element(s)/component(s) that are within the two tags of JSX elements. Let's say we have the following app.js 
+
+        App.js
+
+        import React from 'react';
+        import './App.css';
+        import MyNewComponent from './components/MyNewComponent';
+            
+        function App() {
+        return (
+            <div className="App">
+                <MyNewComponent header={ "Header Prop" }>
+                    <h1>These are children</h1>
+                    <p>This is a child</p>
+                    <p>This is another child</p>
+                    <p>This is even another child</p>
+                </MyNewComponent>  
+            </div>
+        );
+        }
+            
+        export default App;
+
+    We have a Component called MyNewComponent. There is one prop called header, which we can access within our MyNewComponent.js We also have some HTML elements between the opening and closing MyNewComponent JSX tags. All elements between these tw tags are called children. WEe can access them through props via the following. 
+
+        MyNewComponent.js
+
+            import React from 'react';
+                
+            const MyNewComponent = (props) => {
+                return(
+                    <div>
+                        { props.children }
+                        <h1>
+                            { props.header }
+                        </h1>
+                    </div>
+                );
+            }
+                
+            export default MyNewComponent;
+
+    So we can wrap content with JSX and then nest children so they can be accessed through props. The following is the output from the code above. 
+
+        These are children
+            this is a child
+            this is another child
+            this is even another child 
+        Header Prop 
+
+
+Styles 
+
+    Direct Import 
+
+        There are multiple ways to add styles to a React app. One way is to simply import a CSS file directly and use its classes. For example, assume the following CSS file and component file are in the same directory. 
+
+            /* styles.css */
+            .btn {
+                padding: 12px 15px; 
+                font-family: Arial, sans-serif;
+                font-weight: bold;
+                background: linear-gradient(30deg, rebeccapurple, magenta); 
+                color: #fff; 
+                border: none;
+            }
+
+            // MyButtonComponent.js
+            import React, { Component } from 'react';
+            import './styles.css';
+                
+            const MyButton = (props) => {
+                return (
+                    <button className="btn">{ props.children }</button>
+                );
+            }
+                
+            export default MyButton;
+
+        One drawback f this approach is that styles are not encapsulated to the component. In other words, by importing this styles.css file, if we use the "button' class anywhere else in our application, these same styles will be applied, which amy not be the desired outcome. Note that we use className instead of class when writing JSX, as class is a reserved word in JavaScript 
+
+    Inline Styles 
+
+        A second way we can incorporate styles is directly passing an object to the style attribute of an HTML element. For example, see the following: 
+
+            // MyButtonComponent.js
+            import React, { Component } from 'react';
+            
+            const btnStyle = {
+                padding: '12px 15px',
+                fontFamily: 'Arial, sans-serif',
+                fontWeight: 'bold',
+                background: 'linear-gradient(30deg, rebeccapurple, magenta)', 
+                color: '#fff',
+                border: 'none'
+            };
+            
+            const MyButton = (props) => {
+                return (
+                    <button style={btnStyle}>{ props.children }</button>
+                );
+            }
+                
+            export default MyButton;
+
+        
