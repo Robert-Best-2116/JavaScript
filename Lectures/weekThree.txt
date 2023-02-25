@@ -68,3 +68,64 @@
         Lifting State 
 
             When using map in React it wants to be able to identify an index for each instance in an array. It wants to have a unique identifier for each item so that it can be changed or edited. So that you know which component you are changing. We will be assigning a unique ID to each component. The power of React is that everything can be used over and over again with components. Beings that data is only passed downwards in React we will need to lift it up to the parent component so that way siblings components can share information. You remove the variable from the child element, and paste it into the function App(), import useState from react. You will also need to pass in the information to the other sibling element, and pass in prop to the siblings in both the component as well as the App.js you can also just pass in the prop name into the siblings, in the following way {propName, otherProp}, and we will not need to destructure it. 
+
+
+2/22/23
+
+    Office Hour 
+
+        Understanding API's will help out a lot of projects and algos. 
+
+    Lecture
+        APIs  
+
+            When you have an API you have a base url, its what everything has in common, all requests must start with it. 
+
+                https://github.com/public-apis/public-apis#index
+
+
+2/23/23
+
+    Office Hour 
+
+        What are API's? the basic understanding 2+ technologies or systems talking to one another mainly to share data from a database, but also connect processes, ie to develope data science, process payments, and map locations 
+
+        API's do the heavy lifting that we don't want to do under the hood. 
+
+        How do they communicate? 
+
+        First we send a request in HTTP, then it sends out a response in the form of a JSON object, We use API's because its easier to be honest. Using API helps you to to increase efficiency and improves scalability. There are many things that are used to gather data, and it will allow us to access that dat without having to gather it ourselves. As well as process payments, use it for login and registration and several other aspects of the web which have already been automated and are widely available for use. 
+
+        What is needed to use an api? 
+            endpoints-base API link 
+            http requests-get post put delete
+            inputs-querying with parameters
+            API key-depends on the app.
+
+
+    Lecture
+
+        PUT Vs PATCH, put replaces all of the information, while a PATCH request only changes selected information. You can think of a REST API as a traffic controller for the requests, they control where they send you in the web server. Sometimes the web server has the information on and, other times the web server will have to query the database and then it will send the information back to the web server and then to the API and then to you. 
+
+        Sometimes, the web server will send a request to another companies API and then it will repeat the same process. This will all happen simultaneously, and often happen with more than one API. 
+
+        When using useEffect it will need to be imported, useState is a hook and runs something called side-effects, it allows us to put something in motion the moment something is used. It allows us to run that information when the component is mounted. Causing the code to be run immediately when the code is implemented. useEffect also has a dependency array at the end of the code, what it does is allow us to use multiple use effects and keep track of the state and component. So once the dependency array is updated, it will run everything again. YOu never want to use the setter in the same useEffect as your getter, as it will create an infinite loop. The convince of this is that it will only run once and when the getter has been changed. 
+
+        Fetch is a promise, a promise allows us to run asynchronous stuff. Whenever we use a promise, it allows us to start the process/function but then its also allowed to do other things concurrently side by side, while its processing that data. It will have a then. and a catch. When were dealing with fetch, you use the .then for when things go right and a .catch for when things go wrong, somewhat like an if/else statement. If we don't handel the error, then it makes it more difficult to correct problems. It will be up to the dev to create how to deal with the error. 
+
+        When working with an API and requesting a JSON object, the response can be named anything, we will not always be using fetch, we can often use axios. you use axios.get for your get method, and you'l post your actual URL from that location. You will need to import axios from axios. Axios is still a promise, it just removes one of the steps for us. you will still need to use the .thens and the .catch, with fetch, we need to create a json object, with axios it automatically does that for us. You still use .notation to access the information inside of the object to access your array of objects. Note when using axios, the first thing you will use for the .notation is .data to access the information. 
+
+        There are a few ways to run asynchronous functions. One is async await, youl use a variable, and you will need have it equal async
+        
+            const apiCall = async () => { 
+                try {if things are good to go what to do} 
+                catch (error) {if things go wrong what to do}
+            }
+
+        with this you can pass in the const to a button. You can use this or fetch, it doesn't really matter. If you want to use async await in use effect but theres more steps 
+
+        the difference is you will need to call the function inside of the useEffect function outside of the api function. 
+
+            Note you can also use it as a regular function instead of an arrow function. 
+
+            
