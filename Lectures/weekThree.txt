@@ -128,4 +128,4 @@
 
             Note you can also use it as a regular function instead of an arrow function. 
 
-            
+        when you create an object in state it will auto create the keys for the values that are present. 

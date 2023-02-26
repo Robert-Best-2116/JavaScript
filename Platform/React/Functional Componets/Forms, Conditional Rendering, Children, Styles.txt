@@ -84,7 +84,7 @@ Cleaning Up
 
         <input type="text" onChange={ (e) => setUsername(e.target.value) } value={ username } />
 
-    We've now applied what's known as a two-way data binding, and whatever value is currently in the username state will match what is in the form. What that means for us that inside the createUser function we can set username back to an apprpriate starting value by using the setter/setState method and its value will be mirrored in the value we see in our input. 
+    We've now applied what's known as a two-way data binding, and whatever value is currently in the username state will match what is in the form. What that means for us that inside the createUser function we can set username back to an appropriate starting value by using the setter/setState method and its value will be mirrored in the value we see in our input. 
 
     inside of the createUser function
         setUsername("");
