@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
 // import PersonCard from './components/PersonCard';
 // import SomeFunctionalComponent from './components/SomeFunctionalComponent';
@@ -23,6 +24,7 @@ function App() {
       <Text/>
       <Items/> */}
       <UserForm/>
+      <MovieForm/>
 
 
     </div>
