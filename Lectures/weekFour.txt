@@ -1,0 +1,34 @@
+
+
+2/28/23 
+
+    Office Hour 
+
+        Went over todo list core project, need to be sure that your targeting the list object via the ID in order to change the state of the completed object specifically instead of globally 
+
+    Lecture 
+
+        Routing 
+
+            When not using a SPA the routing works by sending you to an entirely different page, each page is built separately, and rendered individually. The way a single page application works, is that we have one page, with a bunch of separate components that we swap out, so when a request is made, instead of sending you to a different page. The routing will command the page, and tell them what components it needs to see, thus mimicking a standard application. 
+
+            Link on query parameters.
+                https://medium.com/geekculture/apis-query-string-parameters-f7f0c060b1
+
+        React Router 
+
+            Beings that React creates SPA's we need something to control the routing, so we will need to use React Router, inside of your react application you will need to run npm install react-router-dom, you should see it inside of your package.json. There are couple main things that it has, browser route, routes, route, link, useParams, useNavigate, 
+
+            browserRouter, you can put it inside of your app.js or you can put it inside of your index.js, we do not want it to be self closing, we want to put the app / inside of it, and import browserRouter from react-router-dom, 
+
+            Afterwards you want to create some routes, you will need to import the tools, routes, route. Routes is our keyword, route identifies the route specifically. This happens inside of the app.js You do not want the routes to be self closing. So you can nest everything. Inside of the route, we will have path="/" which is your base pass, then element={} this is what you want the component to do once you have accessed the route. In there you will have the components you want to render. So, it would be element={<Home/>} So that when it is called, it will render the Home Component. 
+
+                Note the / indicates the localhost 3000, everything after the slash is simply routed, to localhost:3000/routeName
+
+            We can also use route path exact, what it means is that it must do that exact pathway. It will cause it to make sure that the routing is exact, not necessarily needed. 
+
+            So, we can create a button or a link that is tied to the route. React doesn't allow for a tags, because it doesn't want you to manipulate the DOM itself, so instead, we use "link" we import that from the react-router-dom, it simply routes you to the route that matches the link to="". 
+
+            we can use userParams, in the URL, by adding :variableName, we can get the value of the variable using userParams. we can destructure it and use it in the actual code. we will pass in const, and the const must match the variableName we used previously. Note we will need to import useParams from react-render-dom or whatever it is. We are then able to pass it in, as a {variable} into our component. Note that things are always passed in a string, and the value will need to be typecast if you wish to manipulate it. 
+
+            we can also have the user auto navigated around the website upon completion of a form or other action. You will want to import useNavigate, and useState to save the information that is being passed in. You will have your on submit handler, pass in the information and go to the route, while passing in the variable. It is useful for forms. 

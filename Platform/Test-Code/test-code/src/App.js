@@ -2,6 +2,9 @@ import React from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
+import MyNewComponent from './components/MyNewComponent';
+import MyButtonComponent from './components/MyButtonComponent';
+import Groceries from './components/Groceries';
 // import PersonCard from './components/PersonCard';
 // import SomeFunctionalComponent from './components/SomeFunctionalComponent';
 // import Header from './components/Header';
@@ -23,8 +26,16 @@ function App() {
       <Name/>
       <Text/>
       <Items/> */}
-      <UserForm/>
+      {/* <UserForm/>
       <MovieForm/>
+      <MyNewComponent header={ "Header Prop Test" }>
+            <h1>These are children</h1>
+            <p>This is a child</p>
+            <p>This is another child</p>
+            <p>This is even another child</p>
+      </MyNewComponent>  */}
+      <MyButtonComponent/>
+      <Groceries/>
 
 
     </div>
