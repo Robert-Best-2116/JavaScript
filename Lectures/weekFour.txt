@@ -32,3 +32,48 @@
             we can use userParams, in the URL, by adding :variableName, we can get the value of the variable using userParams. we can destructure it and use it in the actual code. we will pass in const, and the const must match the variableName we used previously. Note we will need to import useParams from react-render-dom or whatever it is. We are then able to pass it in, as a {variable} into our component. Note that things are always passed in a string, and the value will need to be typecast if you wish to manipulate it. 
 
             we can also have the user auto navigated around the website upon completion of a form or other action. You will want to import useNavigate, and useState to save the information that is being passed in. You will have your on submit handler, pass in the information and go to the route, while passing in the variable. It is useful for forms. 
+
+    
+    3/1/23
+
+        Greys Hour!! 
+
+            Working through the same project as last time, todo list. 
+
+            When going about a large assignment, its important to start with how many components you will have and what will they do. Remember your app.js is only swapping out components. app.js will be your main place for your state, until we start to modularize. As props are passed down from parent to child. When it comes to this project, we want to keep track of our to do list and the individual tasks. Its important to be specific. The second piece of state that we want to have is a list/array, we want to be able to change things in our list, so we need to keep track of that. We need to put an empty [] inside of it so that we don't have errors. Remember setting state, uses [], and props use {}. 
+
+            Next step is to create our components, its wisest to start with the form as that will be our input. For the form, we need to receive props, a wise way to remember that is, in order for you to give the props, the component must receive it. Be sure to pass in the props and deconstruct them. Next its important to set the form up. Its wise to have your type, your class name, your place holder, the name, the value {}, and the event in this case on change, its important to have the value, because if you do your event.target.value, if you don't have a value then you wont have anything to target. Your form also needs its event handler for onSubmit 
+
+            Then we need to create the function for the onSubmit, you will need to use event.preventDefault(), and then create the new variable inside of the function. (note to create an id for these objects, you can pass in uuid and create a variable to hold the id.) when we create our new item and add it to our list, we will use a spread operator [...arrayName, newObject]. these will be in [] and put that after setTodoList as thats how we put new items inside of our list with our setter. 
+
+                setTodoList([...todoList, newTodoObj])
+
+            afterwards we need to set our task back to an empty string 
+
+                setTask("")
+
+            inside of the form, we will have access to do the todoList.map((onetodo, index) => (
+                <div key={index} style= >
+
+            ))
+
+
+            For the view part were looping through it, for the delete part, the update part, we will need an id. We will need an onClick function we will need to be able to pass it something. we will use the name that we pass in with the .map function, to loop through it, so our variable. and target the id. so oneTodo.id in order to properly target it and pass it in. When you want to take something out, use the .filter function, you'l pass in the todo item, and use the passed in value, and filter it out. Were not deleting it so to speak but we are filtering out the information that is not required anymore and creating a new array with the information we want to keep. 
+
+
+    Lecture 
+
+        Intro To Express, express is a framework, while JS is a library, a frame work lays out how things should be operated. Express is really powerful when it comes to middle where, ie how we handel connections between front end and backend. Express is essentially our backend to our react front end(client side). Express will be our server side, similar to our API, in its underpinnings its going to be our Node.JS we will be bringing in our database, which is mongoDB, and we will eventually start having the react client, connect to our server, and our server connect with our DB, 
+
+
+        installing node js. go to your server inside of your file, open your terminal and cd into your server folder, then npm install express. You should get a package Json file in there. Sometimes its in there sometimes its not, so then, run npm init -y, and that will create a package.json folder for that file. we will also want to add in a .gitignore, then in that file, your going to say /node_modules 
+
+        Now we have our client, with our node modules and our server is in there. inside the server.js file, we need a const express  = require("express"); const app = express();, const port = 8000
+
+        then use app.listen(port, () => console.log("listing on port : ${port}"));
+
+        Note-All of this is on the platform. 
+
+        to connect to an api, we will use app.get
+
+            need to watch lecture. 
