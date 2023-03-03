@@ -1,0 +1,56 @@
+
+
+What is Routing??
+
+    You should be familiar with routing at this point. When you go to any website, you are visiting a route. This follows the request/response cycle. Where you make a request to the server, and it sends HTML, CSS, and JavaScript back to you dynamically depending on what route you are visiting. 
+
+    However, in a Single Page Application, routing does not make sense in the same way. We know that when you first visit a site, all the HTML, CSS and Javascript are all loaded. So, how would routing even work? It seems like it would be inefficient to reload everything with a new route, and it defeats the purpose of a Single Page Application.
+
+    Well, we need to change our understanding of routing when dealing with SPAs. In SPA, we will use routing, but only in a very superficial sense. We will go to a new route, but we will actually not necessarily be making another request to the server. Instead, this pseudo-route will just tell our SPA which part of the page we want to see. So, if you are not making requests to an API, visiting a new route in a SPA is not actually making another request. It is just a way to tell our SPA the portion of the app we want to see. This gives the illusion to the user that they are visiting another route. 
+
+    Let's consider a dynamic site setup it. If you are on a website like Facebook, and it is using a SPA, going to a new page changes the UI (HTML, CSS and JavaScript), but there is also data that is loaded. We know that if we refresh a page, and there has been a new facebook post, that post will show up after refresh. That clues us in that data is not sent in with the first response. This is because we we go to a new "pseudo-route" in which it grabs the data from our database, we actually are going to make an asynchronous request (AJAX) to our server to grab the data, and just update the DOM with that data. Other than that, the HTML, CSS, and Javascript will just be loaded based on what was sent in the first request. 
+
+
+Anatomy of a URL 
+
+    Routes are an important part of web development and as such they will be something we will want to address in our React Projects. There are multiple different parts of a typical route, but for us when we're referring to routes in our projects we will be focusing on the part that comes after the domain, the path!
+
+    Just as we have routes on our server side tell us how a user's request should be handled, we can have routes on our client side, as well. It is very important to distinguish the two. When we type a URL into our browser's address bar and press enter, we are sending a request to a server. However, when we add routes to a to a SPA, no request should be sent to our server. We will use routes to manipulate the DOM to swap out components, and that is very different from traditional back-end routes. 
+
+
+React Router 
+
+    https://reactrouter.com/en/v6.3.0/getting-started/overview
+
+    There are a number of ways for us to introduce routes into our React project. UNlike some other frameworks, React doesn't provide a solution for us to use. We will need to install our own. The most popular library for this is React Router. React Router will be easy for us to install and we will need to add this as a dependency for each project that needs routing. From inside the project folder, we can install this using npm. 
+
+        npm install react-router-dom 
+
+    Next we will need to add some code into our project, fora quick demo let's start with our App.js 
+
+        App.js 
+
+            import React from "react";
+            import {
+              BrowserRouter,
+            } from "react-router-dom";
+                
+            function App() {
+              return (
+                <BrowserRouter>
+                  <h1>Routing Example</h1>
+                </BrowserRouter>
+              );
+            }
+                
+            export default App;
+
+    This is a really basic app so far which will show up as a simple header with just an h1 element. We've added in a new component that we have imported from "react-router-dom" so lets talk about what it does! 
+
+    Browser Router 
+
+        The browserRouter exists to wrap around all of the components we want to be aware of in our current route. It will enable us to work with the history of which routes our users have visited on our site. This component is usually at the root component of our application, so we will put it in app.js We can even wrap it around the <App/> component in index.js! For our next trick, we'll need two components: Home and About. For this example, we write them all inside of our App.js, but you can do the same thing by making them separate files, exporting them and then importing them into the App.js! 
+
+        What we want to do is have the Home component display when the user is at http://localhost:3000/ and have the About component display when the user is at http://localhost:3000/about. To accomplish this we're going to import two more components from "react-router-dom" : Routes and Route. 
+
+        The Routes component will act something like the stage of a play and when we go from one scene (route) to another it will change out what components we see. It will wrap around all of our individual routes. The Route components will define the URL paths for a particular component using its path prop. When the URL's path matches the path prop as it was set in the Route component, then it will display only information passed into its element prop. Here, and in the majority of this course, we will be passing in a functional component like Home or About into the element prop. 
