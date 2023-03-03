@@ -77,3 +77,26 @@
         to connect to an api, we will use app.get
 
             need to watch lecture. 
+
+
+3/2/23 
+
+    Office Hours 
+
+        Going over Faker API 
+
+            Will be watching 
+
+            you can install multiple packages at one time by adding a space after the install. 
+
+            Note-May get error with faker module. and you will need to require @faker-js/faker for the const {faker} or else you may get errors 
+
+            in your function, if you surround the {} with () ie ({}) it will automatically return. 
+
+    Lecture
+
+        Intro into MongoDB, lotta information about this on the database, overview. 
+
+        Mongo Compass is recommended, its a GUI much like MySQL, but with noSQL databases in mind. 
+
+        Went over modularizing, im glad all of this feels all over the place right now. 
