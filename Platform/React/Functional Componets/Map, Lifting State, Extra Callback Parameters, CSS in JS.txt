@@ -83,5 +83,3 @@ Lifting State
     State is a very valuable resource to us as developers! But what if i need to share that data between multiple components? The process of "lifting state" to a common parent component would give us a way to share the setter and getter down through props to all the child components that need to have access to them. Its easer to demonstrate than to explain. 
 
     Lets say that we want to make an app that contains a component for creating messages and another component for displaying messages. They will both need access to the "same" state, but they are separate components. Let's lift state up to the common parent then pass down state to the getter and setter as needed. 
-
-
