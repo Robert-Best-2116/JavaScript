@@ -83,3 +83,255 @@ Lifting State
     State is a very valuable resource to us as developers! But what if i need to share that data between multiple components? The process of "lifting state" to a common parent component would give us a way to share the setter and getter down through props to all the child components that need to have access to them. Its easer to demonstrate than to explain. 
 
     Lets say that we want to make an app that contains a component for creating messages and another component for displaying messages. They will both need access to the "same" state, but they are separate components. Let's lift state up to the common parent then pass down state to the getter and setter as needed. 
+
+    The following is the code we will start with as we try to lift state and then share it through props. 
+
+        MessageForm.jsx
+
+        import React, { useState } from 'react';
+            
+        const MessageForm = (props) => {
+            const [msg, setMsg] = useState("");
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                // what should we do with the message?
+            };
+            
+            return (
+                <form onSubmit={ handleSubmit }>
+                    <h1>Set Message</h1>
+                    <textarea 
+                        rows="4"
+                        cols="50"
+                        placeholder="Enter your message here"
+                        onChange={ (e) => setMsg(e.target.value) }
+                        value={ msg }
+                    ></textarea>
+                    <input type="submit" value="Send Message" />
+                </form>
+            );
+        };
+            
+        export default MessageForm;
+
+
+        MessageDisplay.jsx
+
+        import React, { useState } from 'react';
+            
+        const MessageDisplay = (props) => {
+            return (
+                <>
+                    <h1>Current Message</h1>
+                    <pre>{ props.message }</pre>
+                </>
+            );
+        };
+            
+        export default MessageDisplay;
+
+
+        App.js
+
+        import React, { useState } from 'react';
+        import MessageForm from './Components/MessageForm';
+        import MessageDisplay from './Components/MessageDisplay';
+            
+        function App() {
+            // Lifting State includes creating it in a common parent that can pass data down to ALL
+            //    components that will need access to the getter, setter or both
+            const [currentMsg, setCurrentMsg] = useState("There are no messages");
+            
+            return (
+                <>
+                    <MessageForm />
+                    <MessageDisplay message={ "This is a message to display" } />
+                </>
+            );
+        }
+            
+        export default App;
+
+
+    When we go to submit the form, we have access to the message state (msg) inside of <MessageForm /> ? We could consider putting the <MessageDisplay /> inside of <MessageForm /> and passing the message as a prop to it. This will work, but what if there is another way? 
+
+
+    Props Can Include Functions!!!
+
+        The solution is that we can provide a prop to the <MessageForm /> from the parent of both it and the <MessageDisplay />. If this prop is a function then we can have the child component call the function. And if the function accepts a parameter, then the child can pass an argument into this function. 
+
+        We need to pass a new prop into the <MessageForm />, we can call this onNewMessage and make this prop pass along the youveGotMail function. We also create a message prop for <MessageDisplay /> that contains our getter (currentMsg).
+
+
+            App.js 
+
+            // imports removed for brevity
+            function App() {
+                const [currentMsg, setCurrentMsg] = useState("There are no messages");
+                
+                const youveGotMail = ( newMessage ) => {
+                    setCurrentMsg( newMessage );
+                }
+                
+                return (
+                    <>
+                        // We pass in our function that will take in a string and update our state in our App component
+                        <MessageForm onNewMessage={ youveGotMail } />
+                        // We pass our state getter from our App component down to MessageDisplay through props
+                        //    for displaying its value
+                        <MessageDisplay message={ currentMsg } />
+                    </>
+                );
+            }
+
+        When the child component uses the onNewMessage prop, it can pass a newMessage parameter into it. This will run the youveGotMail function inside of app which takes the newMessage and sets the currentMsg state to the new value. 
+
+            MessageForm.jsx 
+
+            // most of the component removed for brevity
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                props.onNewMessage( msg );
+            };
+
+        Now when handling submitting the form, we can use the onNewMessage prop to pass that message up to App.js. When we submit the form in <MessageForm /> it passes the information up to the parent <App/> component which in turn passes it down to the >MessageDisplay /> component. This then displays our message. 
+
+            Documentation 
+
+                https://beta.reactjs.org/learn/sharing-state-between-components
+
+            
+Sending Arguments in Callbacks 
+
+    At some point, you will need to send additional information in a callback. Let's look at the following example: 
+
+        const MyComponent = props => {
+            const onClickHandler = (e) => {
+                alert("You have clicked the button");
+            }
+        
+            return props.movies.map( (item, index) => {
+                return <button onClick={ onClickHandler }>{ item }</button>
+            });
+        }
+
+    This is a simple component that will alert you whenever you click on a button. We have sent down an array of movies; we want to click a button and alert the name of the movie. How would we accomplish this? Unfortunately, when our onClickHandler function is invoked, it will only be provided with the event as its argument, which doesn't directly tell us which movie we need to alert. So, we will need to send down a new callback function. 
+
+        const MyComponent = props => {
+            const onClickHandler = (e, value) => {
+                alert(value);
+            }
+        
+            return props.movies.map( (item, index) => {
+                return <button onClick={ (e) => onClickHandler(e, item) }>{ item }</button>
+            });
+        }
+
+    We have defined a new inline anonymous callback function that, when invoked, will then call our onClickHandler with the appropriate item. 
+
+
+CSS in JS 
+
+    CSS Modules provide an excellent way to isolate our styles by component and thus, keep our apps more modular. However, that s not to say that they don't have some limitations. One such limitation is the inability to dynamically specify style properties depending on certain conditions. In that sense, since a CSS module is really just a regular CSS file, it is limited to the styles we define in it. Of course, we could use inline styles to accomplish more dynamic styling, but at the cost of sacrificing media queries and pseudo-classes, as mentioned in the previous lesion. Enter Styled Components. 
+
+    Styled Components 
+
+        Styled Components is a so called CSS in JS library, meaning that we actually define our styles using JavaScript. To use Styled Components in your project, run the following in the terminal. npm install styled-components. Here's how we might create a box with some dynamic class properties. 
+
+            src/components/StyledBox.js 
+
+            import React from 'react';
+            import styled from 'styled-components';
+            
+            const StyledBox = styled.div`
+                border: 1px solid lightgray;
+                background: ${props => props.bgColor};
+                width: ${props => props.width || '100px'};
+                height: ${props => props.height || '100px'};
+            `;
+            
+            export default StyledBox;       
+
+        Lets step through this line by line. After importing React we import the default export from Styled Components and name it styled. Next, we're defining a component called StyledBox. This component is a styled div which were able to dynamically style using template literals, which is a string surrounded by backticks. Note that to use the component's props to dynamically change style properties, we had to provide a callback function, which takes in the components props to dynamically and returns the desired value. When we return props.width || '100px1, that means the the value will be 100px if the value isn't specified meaning if the value is undefined in the props, so how do we use it? 
+
+            src/components/SomeOtherComponent.js
+
+            import React from 'react';
+            
+            import StyledBox from './StyledBox';
+            
+            const SomeOtherComponent = () => (
+                <div>
+                    <StyledBox bgColor="blue"/>
+                    <StyledBox bgColor="red" height="200px"/>
+                </div>
+            )
+            
+            export default SomeOtherComponent;
+
+        StyledBox is essentially now just a component like any other; specifically, it provides a stylized div wrapper. Note that we could have gotten even fancier with the StyledBox component and had it taken in a minimum with to be visible. We could have then used the provided prop to dynamically establish a media query for its display property.
+
+    Styletron 
+
+        Styletron is fairly similar to Styled Components, but with some important differences. Instead of using template literals ``, Styletron uses an object syntax, similar to inline styling with React. To use Styletron in your project run: npm install styletron-react. You also need to wrap your application or whatever part will be using Styletron, with its provider component and install a second package styletron-engine-atomic to create the engine. 
+
+            src/App.js 
+
+                import React from 'react';
+                
+                import { Provider } from 'styletron-react';
+                
+                import { Client as Styletron } from 'styletron-engine-atomic';
+                
+                const engine = new Styletron();
+                
+                function App() {
+                    return (
+                        <Provider value={engine}>
+                            {/* your other components go in here */}
+                        </Provider>
+                    )
+                }
+                
+                export default App;
+
+
+        Now, let's create another StyledBox
+
+            src/components/StyledBox.js 
+
+            import React from 'react'; 
+            import { styled } from 'styletron-react';
+            
+            const StyledBox = styled('div', props => ({
+                border: '1px solid lightgray',
+                background: props.$bgColor,
+                width: props.$width || '100px',
+                height: props.$height || '100px',
+            
+                display: 'none',
+            
+                ['@media and (min-width: ' + (props.$minWidth || '500px') + ')']: {
+                    display: 'block'
+                }
+            }));
+            
+            export default StyledBox;
+
+        After importing React, we specifically import the styled function from styletron. Next, we created a styledBox component by invoking the styled function with "div" as the first argument and a callback function as the second. Our callback function takes the props object and returns a styling object with a key/value pairs that must be specified with camelCasing. JavaScript doesn't support hyphens as object keys. Finally, here we have created a dynamic media query which will change based on whether a minWidth prop is provided. 
+
+            import React from 'react';
+            
+            import StyledBox from './StyledBox';
+            
+            const SomeOtherComponent = () => (
+                <div>
+                    <StyledBox $bgColor="blue"/>
+                    <StyledBox $bgColor="red" $height="200px" $minWidth="1200"/>
+                </div>
+            )
+            
+            export default SomeOtherComponent;
+
+        Note that in order for these styling-specific props to work as expected, they will be preceded with the dollar sign, both in the components themselves, and in the calling code. 
