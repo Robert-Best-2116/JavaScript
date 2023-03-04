@@ -11,11 +11,16 @@ import TodoList from './components/TodoList';
 //then we will need to be able to delete said items. 
 function App() {
 
+  //created state to pass down to the other components
   const [list, setList] = useState([]);
 
 
   return (
+    
     <div>
+      {
+        //Passed down said state to child components. 
+      }
       <TodoList list={ list } setList={setList}/>
       <Task list={ list } setList={setList}/>
 
