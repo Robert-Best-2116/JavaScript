@@ -1,0 +1,36 @@
+Beginning
+
+    npm create-react-app app-name 
+    cd app-name 
+
+    npm start 
+
+    npm install axios 
+
+working with a backend 
+
+    server folder 
+
+        config folder 
+
+        controllers folder 
+
+        models folder
+
+        routes folder
+
+        server.js file
+
+go inside of the server file in the terminal
+    
+    run npm init -y 
+
+    npm install express mongoose 
+
+
+inside of server folder 
+
+    .gitignore
+
+        /node_modules 
+
