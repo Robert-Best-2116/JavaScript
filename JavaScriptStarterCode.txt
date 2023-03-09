@@ -1,36 +1,110 @@
+
+
 Beginning
 
-    npm create-react-app app-name 
-    cd app-name 
+    Create parent folder
+
+    npm create-react-app client 
+    cd client 
 
     npm start 
 
     npm install axios 
 
-working with a backend 
+Working With Backend 
 
     server folder 
 
         config folder 
+            mongoose.config.js
 
-        controllers folder 
+        controllers folder
+            <<databaseName>>.controller.js
 
         models folder
+            <<databaseName>>.model.js
 
         routes folder
+            <<databaseName>>.route.js
 
         server.js file
 
-go inside of the server file in the terminal
-    
-    run npm init -y 
-
-    npm install express mongoose 
-
-
-inside of server folder 
+Inside of Server Folder 
 
     .gitignore
 
         /node_modules 
+
+Inside of the Server File in the Terminal
+    
+    run npm init -y 
+
+    npm install express mongoose cors nodemon 
+
+
+Inside of server.js 
+
+    connect your server to express 
+
+        const express = require('express'); 
+        const app = express();
+
+        require('.config/mongoose.config);
+
+        app.use(express.json(), express.urlencoded({extended:true}));
+
+        //may need to add routes here. 
+
+        app.listen(8000, () => console.log('the server is all filed up on port 8000'));
+
+
+        Config
+
+            mongoose.config.js 
+
+                const mongoose = require('mongoose')
+
+                connect your database inside of there, and check to be sure that your not doubling up on your DB 
+
+        working with models 
+
+            modelName.model.js 
+
+            const mongoose = require('mongoose')
+
+            create the schema 
+
+                const MovieSchema = new mongoose.Schema ({
+                    title: {
+                        type: String,
+                        required: [true, "title is required"],
+                        minlength: [6, "title must be at least 6 characters long"] 
+                    }
+                })
+
+
+            module.exports = mongoose.model("Movie", MovieSchema);
+
+
+        working with controllers 
+
+            movie.controller.js 
+
+                const Movie = require ("../Movie.model");
+
+                implement your CRUD functionality 
+
+
+        Working with routes 
+
+            const MovieController = require("../controllers/movie.controller);
+
+            module.exports = app => {
+                app.get('/api/movies', MovieController.findAllMovies);
+            }
+
+        
+
+
+
 

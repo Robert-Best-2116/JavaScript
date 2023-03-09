@@ -1,0 +1,104 @@
+
+
+
+3/7/23
+
+    Office hours
+        help with Axios Pokemon API 
+
+    Lecture 
+
+        Check in, deep dive into modularization, 
+
+        Setting up the backend, spoke about the importance of compartmentalizing and modularizing aps. 
+
+        Validations Docs: https://mongoosejs.com/docs/validation.html
+
+        Config
+
+            mongoose.config.js 
+
+                const mongoose = require('mongoose')
+
+                connect your database inside of there, and check to be sure that your not doubling up on your DB 
+
+        working with models 
+
+            modelName.model.js 
+
+            const mongoose = require('mongoose')
+
+            create the schema 
+
+                const MovieSchema = new mongoose.Schema ({
+                    title: {
+                        type: String,
+                        required: [true, "title is required"],
+                        minlength: [6, "title must be at least 6 characters long"] 
+                    }
+                })
+
+
+            module.exports = mongoose.model("Movie", MovieSchema);
+
+        working with controllers 
+
+            movie.controller.js 
+
+                const Movie = require ("../Movie.model");
+
+                implement your CRUD functionality 
+
+                module.exports.create = (req, res) => {
+                    const {title, genre, year } req.body;
+                    movie.create({
+                        title,
+                        genre,
+                        year
+                    })
+                }
+
+                module.exports.findByGenre = (req, res) => {
+                    movie.find 
+                }
+
+            // built In functionality 
+                https://mongoosejs.com/docs/api/model.html#model_Model-updateOne
+
+        Working with routes 
+
+            const MovieController = require("../controllers/movie.controller);
+
+            module.exports = app => {
+                app.get('/api/movies', MovieController.findAllMovies);
+                //all other routes, and controller methods 
+            }
+
+        
+        Server! 
+
+            const express = require('express'); 
+            const app = express();
+
+            require('.config/mongoose.config);
+
+            app.use(express.json(), express.urlencoded({extended:true}));
+
+            const AllMyDatabaseRoutes = require('./routes/database.routes");
+            AllMyDatabaseRoutes;
+
+            app.listen(8000, () => console.log('the server is all filed up on port 8000'));
+
+
+3/8/23 
+
+    Greys Hour!! 
+
+        wrote notes on JS Starter Code, separate file 
+
+
+    Lecture 
+
+        To change the collection name, at the end of the new movie schema, add {collection = newName }
+
+        https://mongoosejs.com/docs/schematypes.html
