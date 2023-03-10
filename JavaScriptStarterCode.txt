@@ -29,53 +29,43 @@ Working With Backend
 
         server.js file
 
-Inside of Server Folder 
+        .gitignore
 
-    .gitignore
-
-        /node_modules 
+            /node_modules 
 
 Inside of the Server File in the Terminal
-    
+
+    //Creates our package json
     run npm init -y 
 
-    npm install express mongoose cors nodemon 
+    npm install express mongoose cors
 
 
-Inside of server.js 
+Folder Structure
 
-    connect your server to express 
+    Config
 
-        const express = require('express'); 
-        const app = express();
+        mongoose.config.js 
 
-        require('.config/mongoose.config);
+            const mongoose = require('mongoose');
 
-        app.use(express.json(), express.urlencoded({extended:true}));
+            mongoose.connect('mongodb://127.0.0.1:27017/<<ProjectName>>DB', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+            })
+            .then(() => console.log('Established a connection to the database'))
+            .catch(err => console.log('Something went wrong when connecting to the database ', err));
 
-        //may need to add routes here. 
+    Models 
 
-        app.listen(8000, () => console.log('the server is all filed up on port 8000'));
+        modelName.model.js 
 
-
-        Config
-
-            mongoose.config.js 
-
-                const mongoose = require('mongoose')
-
-                connect your database inside of there, and check to be sure that your not doubling up on your DB 
-
-        working with models 
-
-            modelName.model.js 
-
-            const mongoose = require('mongoose')
+            const mongoose = require('mongoose');
 
             create the schema 
 
-                const MovieSchema = new mongoose.Schema ({
-                    title: {
+                const <<ModelName>>Schema = new mongoose.Schema ({
+                    <<Item>>: {
                         type: String,
                         required: [true, "title is required"],
                         minlength: [6, "title must be at least 6 characters long"] 
@@ -83,28 +73,66 @@ Inside of server.js
                 })
 
 
-            module.exports = mongoose.model("Movie", MovieSchema);
-
-
-        working with controllers 
-
-            movie.controller.js 
-
-                const Movie = require ("../Movie.model");
-
-                implement your CRUD functionality 
-
-
-        Working with routes 
-
-            const MovieController = require("../controllers/movie.controller);
-
-            module.exports = app => {
-                app.get('/api/movies', MovieController.findAllMovies);
-            }
-
+        module.exports = mongoose.model("<<ModelName>>", <<ModelName>>Schema);
         
 
+
+    Controllers 
+
+        <<ModelName>>.controller.js 
+
+            const <<ModelName>> = require ("../models.<<modelName>>.model");
+
+            //implement your CRUD functionality 
+
+            module.export.findAll<<ModelNamePlural>> = (req, res) => {
+                <<ModelName>>.find()
+                    .then((all<<ModelNamePlural>>) => res.json(all<<ModelNamePlural>>))
+                    .catch((err) => res.json({message: "Find All: Something went wrong", error: err}));
+            }
+
+
+    Routes 
+
+        const <<ModelName>>Controller = require("../controllers/<<ModelName>>.controller);
+
+        module.exports = app => {
+            app.get('/api/<<ModelName>>', <<ModelName>>Controller.findAll<<ModelNamePlural>>);
+            //all other routes
+        }
+
+Inside of server.js 
+
+    connect your server to express 
+
+        const express = require('express'); 
+        const app = express();
+        const port = 8000;
+        const cors = require('cors');
+
+        require('.config/mongoose.config);
+
+        app.use(express.json(), express.urlencoded({extended:true}));
+
+        const AllMyDatabaseRoutes = require('./routes/<<modelName>>.routes");
+            AllMyDatabaseRoutes;
+        //alt to the previous one. 
+        require('.routes/<<modelName>>.routes')(app);
+
+        app.listen(8000, () => console.log('the server is all filed up on port 8000'));
+
+Running Your Server 
+
+    Inside the Terminal-Server Folder
+
+        nodemon server.js
+        
+
+Inside Mongoose DB
+    
+    Create your Database make sure it matches the config name. 
+
+    
 
 
 
