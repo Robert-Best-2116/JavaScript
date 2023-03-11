@@ -1,0 +1,12 @@
+
+
+What is an API? 
+
+    An API is an Application Programming Interface, in a general sense it is a contract that governs how different parts of an application interact. a Web API, which is what we'll be focusing on, is neither a server nor a database; rather, it is a set of HTTP endpoints and rules we need to follow to both retrieve data from and make changes to resources through the service. You can think of web API's as middlemen for our web; they sit in between our frontend code and the actual databases backing them.
+
+    API endpoints are usually web URLs where you can pass information either through the URL or in the body of the request and the server returns JSON or an alternative structured data format such as XML. Express will be our API that serves our index.html page but also returns JSON data to our front end framework. Our ultimate goal is to have React or any front end framework handle everything on the client end and not have to worry about any database operations that could slow it down. 
+
+
+Postman 
+
+    Postman is an awesome developer tool that allows us to interact with restful API's made by others and/or ourselves. It is a user interface that helps us make HTML requests without writing a bunch of code. Imagine creating data without having to create an html page with a form that goes to a route on our server end, which processes the input from the form and creates a new object, then finally redirects to another tml page that we have to make which will show the newly created object. 
