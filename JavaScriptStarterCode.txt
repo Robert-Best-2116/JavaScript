@@ -83,13 +83,22 @@ Folder Structure
 
             const <<ModelName>> = require ("../models.<<modelName>>.model");
 
-            //implement your CRUD functionality 
+            //implement your CRUD functionality-Label Errors individually for recognition 
 
+            //Find All 
             module.export.findAll<<ModelNamePlural>> = (req, res) => {
                 <<ModelName>>.find()
                     .then((all<<ModelNamePlural>>) => res.json(all<<ModelNamePlural>>))
                     .catch((err) => res.json({message: "Find All: Something went wrong", error: err}));
             }
+
+            //Find One 
+
+            //Create
+
+            //Update 
+
+            //Delete 
 
 
     Routes 

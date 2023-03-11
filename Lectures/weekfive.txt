@@ -102,3 +102,19 @@
         To change the collection name, at the end of the new movie schema, add {collection = newName }
 
         https://mongoosejs.com/docs/schematypes.html
+
+
+3/9/23
+
+    Office Hour 
+
+        Going over the core assignment for the week. 
+
+    Lecture
+
+        Building Team Manager 
+
+            when creating a value, you can have a value of the player model 
+
+                enum: meaning it must be one of the options there
+                default: triggers the enum to pick one of the required options. 
