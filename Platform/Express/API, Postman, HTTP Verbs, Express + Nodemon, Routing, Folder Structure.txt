@@ -56,3 +56,14 @@ HTTP Methods
 
             <form action="/process-form" method="POST" >
                 <input type="hidden" name="_method" value="PUT" >
+
+
+Express 
+
+    What is Express? 
+
+        Express.js is a framework written in JavaSCript which acts as an interface to Node's server functionality. It is also the E in the MERN stack, so it must be important! Express allows us to create a robust server with more or less whatever architecture we choose. There are many other server frameworks for Node including Hapi, Koa, and Fastify; however Express is extremely popular. 
+
+    Using Express 
+
+        run npm install in the server file, 
