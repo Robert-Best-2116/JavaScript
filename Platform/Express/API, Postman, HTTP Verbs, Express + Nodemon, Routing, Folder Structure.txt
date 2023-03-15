@@ -67,3 +67,80 @@ Express
     Using Express 
 
         run npm install in the server file, 
+
+
+Removed most of it for brevity, not really relevant, 
+
+
+
+Server Folder Structure 
+
+    As we make our way into learning MongolDB lets first go into the modular folder structure. It's always great practice to get in the habit of modularizing your projects early. As your Projects grow, it will be a lot harder to keep track of all your content if you don't modularize. Let's dive into how we split out code into different files. 
+
+    Folder Structure 
+
+        Since Express will be strictly for handling all communication with the database, we want to structure our project based on our models. Heres what our folder structure will look like: 
+
+            Server Folder 
+                config-will handel the database configuration and connection 
+                controllers-will hold all the CRUD functionality 
+                models-will hold all of the schemas
+                routes-will handle all of our routes for each model 
+                server.js-will handle all the server logic with express 
+
+
+    Modules 
+
+        The ability to include code from files within another file is extremely important in a back-end environment. If you recall, we do this with front-end JavaScript by adding script tags in the src attribute pointing to the right place. But in NodeJS, we need to be able to pull code from JavaScript files into other JavaScript files so a simple script tag will not do any good for us. 
+
+        To do this we can use JavaScript's built in tools to import and export between files: 
+
+            1. require(".filePathGoesHere")-used to import from different files
+            2. module.exports = whateverYouNeedToExportGoesHere- Used to export whatever content you need to export from that file. 
+
+    Exporting in Node 
+
+        There are multiple ways we can export code using module.exports. Here are a couple of ways we can export multiple functions using an object: 
+
+            module.exports.greet = function() {
+              console.log("Hello! We are exporting a function called Greet.");
+            };
+             
+            module.exports.add = function(num1, num2) {
+              console.log("The sum is: ", num1 + num2);
+            };
+
+
+            module.exports = {
+              greet: function() {
+                console.log("Hello! We are exporting a function called Greet.");
+              },
+              add: function(num1, num2) {
+                console.log("The sum is: ", num1 + num2);
+              }
+            }
+
+        Both of these export methods are exporting the same function just in a different way. The syntax in which you choose to export is your choice. 
+
+
+    Importing in Node 
+
+        There are also multiple ways we can Import our functions: 
+
+        save our exports in a variable: 
+
+            const myCustomModule = require("./my_module");
+            myCustomModule.greet();
+            myCustomModule.add(5, 7);
+
+            const { greet, add } = require("./my_module");
+            greet();
+            add(5, 7);
+
+
+    Important Notes 
+
+        Notice that we require the string "./my_module". There are two things to note here: 
+
+            1. There is no .JS at the end of the file. The require method automatically looks for JavaScript files, so we don't need to include the .js file extension. 
+            2. The files app.js and my_module.js are in the same directory. Normally, the require() method looks for node modules that aren't in the same directory as the file that is running; By default, the require() method looks for the modules located in a folder called node_Modules. To tell require() to look in the current directory (ie the folder that the file is located in) we have to include "./" in the front of the path. the "./" is the file path for the current directory. 

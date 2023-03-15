@@ -7,9 +7,9 @@ Beginning
     npm create-react-app client 
     cd client 
 
-    npm start 
+    npm start //note might not do this until the end in the server folder. 
 
-    npm install axios 
+    npm install axios react-router-dom
 
 Working With Backend 
 
@@ -132,18 +132,22 @@ Inside of server.js
 
         app.listen(port, () => console.log(`the server is all filed up on port ${port}`));
 
-Running Your Server 
+Running Your Servers
+
+    Inside the Terminal-Client Folder
+
+        npm start 
 
     Inside the Terminal-Server Folder
 
         nodemon server.js
-        
 
 Inside Mongoose DB
     
     Create your Database make sure it matches the config name. 
 
     
+https://www.mysoftkey.com/mongodb/3-default-database-in-mongodb/#:~:text=1.,storing%20of%20metadata%20for%20sharding.
 
 
 

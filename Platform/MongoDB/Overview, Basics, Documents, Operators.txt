@@ -1,0 +1,149 @@
+
+
+Overview 
+
+    What is MongoDB? Why Use it? 
+
+        MongoDB is a NoSQL database. And that means, Not Only SQL. Meaning while NoSQL does not support a structured query language (SQL) there is more flexibility in the storage of the data other than just basic tabular storage. In english, storing data in tables. Most importantly, the concept of NoSQL databases emphasizes that there are no relations between the data. meaning, in a NoSQL environment, every piece of data is unaware of the other pieces. to be more concise: 
+
+    No Joins! 
+
+        This is different from the traditional relational database model that has been used throughout the software age. Only recently has the adaptation of NoSQL become a prominent phenomenon in the industry. Making it very common but not the standard for every use case. The ideal environment to use aNoSQL database is one that focuses on speed while having little to no need of relationships between tables (or objects in that case) the reasoning being, joins are an expensive operation. The concept of a join is to run through every user and find the address that matches specifically one piece of information in the address table. Doing this for every entry in your table takes a lot of time and resources. Imagine a modern database with a few hundred thousand entries. Now join from another table that has a few hundred thousand entries. Its expensive and time consuming to find One, just one piece of information that matches. 
+
+        With the ability of Node servers to use socket connections, we now have the ability to communicate in real-time between clients and servers. But if we need to do an expensive operation on the server side with the database we'll negate all of the speed advantages we've gained using a Node server. This is a good reason consider using MongoDB, there are plenty of other NoSQL databases out there, but MongoDB has one advantage. Everything stored in a MongoDB is a JSON object. JSON is a JavaScript Object Notation 
+
+            ex: 
+
+                {
+                 'first_name': 'James',
+                 'last_name': 'Johnson',
+                 'age': 32
+                }
+
+
+Basics! 
+
+    The best way to fully grasp the basics of MongoDB is to compare the essential structures with their counterparts in the normal SQL universe. There are three basic comparisons to make that will give you the essentials to get rolling. Along side that, we will also show you the basic commands to use in the shell. 
+
+        Database: SQL-Schema Mongo- DatabaseDB
+        Collection of related records: SQL-Tables Mongo-Collections
+        Each one record in the collection of records: SQL- Row/Record Mongo-Document
+
+    MySQL Database Schema == MongoDB Database 
+
+        No surprises here; the database is still the unit we use to hold an entire project's data. MongoDB is different but it still uses the term database. Note that from our Mongo shell, we have access to all the databases stored on our mongo server. 
+
+        Terminal Commands 
+
+            Show all Databases: show dbs
+            Show current database: db 
+            Change to another database: use <<DB_Name>>
+            Delete database: message_board_db db.dropDatabase() (note this doesn't make that much sense)
+
+    SQL: Tables == MongoDB: Collections 
+
+        A SQL database is comprised of tables. Tables contain groups of similarly-structured pieces of data. MongoDB databases are comprised of collections. A collection is the MongoDB analog to a SQL table. 
+
+        Terminal Commands 
+
+            View all Collections: show collections
+            Create a new collection: db.createCollection("Collection_Name")
+            Destroy a collection: db.<<Collection_Name>>.drop()
+
+        There's not much to say about collections right now. That's because collections are really just in place to corral individual records. There is no structure to a collection, which is part of why MongoDB is powerful, but also part of why a NoSQL database is not a one-size-fits-all solution. This is very different than tables i na SQL database; tables are normally where we define all the structure of a particular facet of our database in a SQL database. Column names and their data tables are very important in the world of relational databases. in NoSQL land, they are much less important as we will soon see. 
+
+    SQL: Row/Record == MongoDB Document (JSON Object)
+
+        This is why we use MongoDB. SQL table rows have the rigid structure: every entry in a database ie every row, has the same fields. This is not the case in MongoDB. Each document is a Json object is and is able to have any number of key-value pairs as you so desire. And just like in regular JavaScript objects, we cn add key-value pairs to objects on the fly. When you use a NoSQL database, you gain speed but lose rigidity; you trade structure for flexibility. Remember, people use Mongo for its speed. If we cant write objects on the fly, we might slow down our transactions and that would be counterproductive. 
+
+        Technically, MongoDB doesn't use Json objects to store your data. They use whats called BSON or Binary Json. BSON is friendlier to store, due to it being binary, which isn't really important to understand. They can support a few more things such as dates, which are not part of Json but are crucial for databases For all intents and purposes, MongoDB documents are to be treated and used as if they were ordinary Json objects. 
+
+
+Documents-Note These are all terminal commands and will not be used 
+
+    Crud Operations 
+
+        Basic CRUD operations for MongoDB Terminal, while we wont be using these in production, the structure/syntax is similar to what has been built upon Mongo. 
+
+        Create 
+
+            db.Collection_Name.insert({Json_Document})
+
+            Note that what were doing is basically JavaScript. the format of the document, is going into the database is exactly the format it will be available to you coming back out of the database.
+
+        Read 
+
+            db.Collection_Name.find({your query document ie name: "Robert"})
+
+            The parameter we pass to this method is a document. Everything in the document will match the fields in the database and only those documents that match the query document will be returned back from the query.
+
+            MongoDB by default returns as many results as it can. If you want to just find all of the given collection you just pass in an empty object to the .find method or nothing at all 
+
+            db.Collection_Name.find({}) or .find() 
+
+            Note you can add .pretty on the end of find .find().pretty 
+
+        Destroy 
+
+            To remove an item from the database, we would run the following syntax 
+
+                db.Collection_Name.remove({query document}, boolean)
+
+                    db.ninjas.remove({belt: "yellow"}) or db.ninjas.remove ({belt: "yellow"}, false)
+
+            The query document is everything you want the deletion targets to match, so that one nukes every single yellow belt member. The second parameter is a boolean, and is optional. If the parameter is omitted it defaults to false. The boolean is called the justOne boolean, and if it is present and it is true, the remove query will only remove the first document that matches the query. 
+
+        Update 
+
+            The update syntax can be tricky if you do not see it done correctly first. Let's say i wanted to add a location to the ninja who's name is trey,. I want to make this location equal to mountain view. I would try the following. 
+
+                db.ninjas.update({name: "trey"}, {location: "mountain view"})
+
+            that would result in it nerfing the name, and just leaving the mountain view. Syntax is right but there are other problems. We pass two documents to the methodL the first one is the query document, meaning that any document that will get updated must match the query. The second document is the document that contains the fields we ant to add. The full syntax for the update query is this: 
+
+                db.Collection_Name.update({query}, {fields to update}, options)
+                    Note-options is optional. 
+
+            MongoDB's native update method will completely overwrite everything except the _id field when we run the shown above. If we wanted to run the update to only add to the document, but not overwrite we would run the following 
+
+                db.ninjas.update({name: "trey"}, {$set: {location: "mountain view"}})
+
+            by default, the update method updates the first document that matches the first parameter passed to the function. In this case. it ws the first object who's name key had a value of trey. The second parameter in the desired query contains what is called an update operator. There are several different types of operators in MongoDB, and we will go over the most common later in the chapter. 
+
+
+Operators 
+
+    Operators are an important part of MongoDb. You've already seen the $set operator in the update method, so you should be aware of their existence. Since our queries are more method based and not typed syntax like regular SQL we need to pack more functionality into the document swe use to query our database. Enter operators, operators allow you to operate on the database. Lets say i have the following documents called dojos that was a lot of stuff. 
+
+    If i wanted to get all the Dojos who's number of students is greater than 15 i would run the following command !
+
+        db.dojos.find({number_of_students: {$gt: 15}})
+
+    The structure of the query should make sense. The extra document that contains the operator, $gt: 15 is being applied to the number of students field of the dojos collection. That key-value pair is the document we pass to the .find() method, and we are off and running. 
+
+
+    Most Common Operators 
+
+        $gt(greater than): number fields only
+        $gte(greater than or equal to): number fields only
+        $lt(less than): number fields only
+        $lte(less than or equal too): number fields only
+        $in(in array) used to find documents who have a particular value within an array. 
+
+    Operators within arrays 
+
+        Perhaps the most important difference in data structures of NoSQL databases compared to traditional SQL is that we have the ability to have a key-value pair where the value can old multiple pieces of information. One of the key rules for relational databases is that no column in a table can have multiple values. This doesn't apply to a noSQL database. 
+
+        If we wanted to add an element to an array inside of an object, the operator we would use is called the $push operator, which is pretty much the same as push for arrays in everything else. To add the interest snowboarding to the student document we would run something like this 
+
+            db.students.update({_id: ObjectId("id_value")}, {$push: {interests: "snowboarding"}})
+
+        The $push operator is a key of the update document, and its value is another document with a key of interest, and a value of snowboarding. Common array update operators 
+
+            $push: adds an object to an array
+            $pop: removes the first or last element of an array, db.collection.update({query}, {$pop: {array_key: 1 pr -1}})
+            $addToSet: It functions just like $push, however, it only adds to the specified array if the value doesn't already exist. 
+            $pull: Removes a specified value from an array. unlike $pop which removes by location in the array db.collection.update({query},{pull: {array_key: value}}), this will remove all instances of value from the documents with the array specified by the array_key that match query 
+
+
+        There we go.
