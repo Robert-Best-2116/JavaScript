@@ -1,0 +1,81 @@
+
+
+Express + Mongoose 
+
+    Mongoose 
+
+        Now that we understand our MongoDB basics, lets connect it to a project and see it in action. The most popular way of using MongoDB with Node and Express is with a library called Mongoose. Mongoose simplifies making making MongoDB queries with its own library methods. This means that we can connect mongoose directly to a MongoDB database and it will allow us to give more structure to our data with the addition of models and schemas. Mongoose will act as a layer between our application and our database enabling us to do things like validate and run complex queries more effectively. 
+
+    
+    Installing Mongoose 
+
+        Start by creating the server folder for your project, and create the server.js file as well as creating the following folder structure. 
+
+            Server- This is your backend server/project folder and will hold all the server related files 
+                Config-Will handle all the database configuration and connection
+                Controllers-Will hold all CRUD functionality for each model 
+                Models-Will hold all the schemas
+                Routes-Will handle all of the routes for each model
+                server.js-Will handle all the server logic with express 
+
+        Once you have created the server.js file and the folders open a new terminal window and navigate to your project folder, go into the server folder and install the server dependencies by running: 
+
+            npm init -y 
+            npm install mongoose express 
+
+        Note: Any file that will use the Mongoose library will need to require it at the top of the file like this 
+
+            const mongoose = require("mongoose");
+
+    
+    Connecting to MongoDB with Mongoose 
+
+        In vs-code, navigate to the config folder where you will need to create the mongoose.config.js file. This is where we use mongoose to connect to MongoDB. Mongoose has a super connivent connection method-mongoose.connect. 
+
+            const mongoose = require('mongoose');
+             
+            mongoose.connect('mongodb://127.0.0.1:27017/name_of_your_DB', {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            })
+                .then(() => console.log('Established a connection to the database'))
+                .catch(err => console.log('Something went wrong when connecting to the database ', err));
+
+        Note: the useNewUrlParser and useUnifiedTopology are options we pass to get rid of deprecation messages in our terminal. 
+
+        Note: If you connect to a database that doesn't exist, Mongoose will create the DB for you as soon as you create your first document. 
+
+
+    Create your Mongoose Schema and Model 
+
+        Mongoose provides more structure to MongoDB by adding schemas that we can create that turn into models for our collections. These models specify keys, types, and validations for documents in a specific collection. Mongoose also handles appropriate naming for us when it communicates with MongoDB. 
+
+        In VS Code, navigate your way to the models folder and create the user.model.js file in the models folder where we create a User collection using mongoose. Remember we need to import mongoose using the require statement at the top of the file. 
+
+            const mongoose = require('mongoose');
+             
+            const UserSchema = new mongoose.Schema({
+                name: {
+                    type: String
+                },
+                age: {
+                    type: Number
+                }
+            });
+             
+            const User = mongoose.model('User', UserSchema);
+
+        Lets break this down. The mongoose.model() method is the most important in this case. Its job is to take a blueprint object and in turn, create the necessary database collection out of the model. We get this blueprint by making a new schema instance from the mongoose.Schema() object constructor. Notice how the mongoose.Schema() method takes an object {} as its parameter?  The structure of that object is how each new document put into the collection will be formatted. You can learn about other Schema Types here
+
+            http://mongoosejs.com/docs/schematypes.html
+
+        When we create a User variable to export and set it to the returned value of the mongoose.model() function: a model object is created using the singular version of the collection name ('User') and the mongoose schema (UserSchema). This model will be used to enable all our needed CRUD functionality. Exporting the User variable will allow us to import and use the User model in any file we choose. 
+
+        Note: After we create our first document using this model, we will find a lowercase, plural version of the collection name in our database. In this case, "users"
+
+
+    Use Mongoose Models to Create/Retrieve/Update/Destroy 
+
+        Navigate your way to the controllers folder where you will create the user.controller.js file that will house all of our CRUD functionality. Notice at the top of the file we do not have a require("mongoose") statement. Instead we have a require("../models/user.model") statement which is importing the User variable that we exported from the user.model.js file. In our controller file, we export different functions that perform the basic CRUD operations using our User model. 
+
+        
