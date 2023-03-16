@@ -19,13 +19,13 @@ Working With Backend
             mongoose.config.js
 
         controllers folder
-            <<databaseName>>.controller.js
+            <<modelName>>.controller.js
 
         models folder
-            <<databaseName>>.model.js
+            <<modelName>>.model.js
 
         routes folder
-            <<databaseName>>.route.js
+            <<modelName>>.routes.js
 
         server.js file
 
@@ -62,7 +62,7 @@ Folder Structure
 
             const mongoose = require('mongoose');
 
-            create the schema 
+            //create the schema 
 
                 const <<ModelName>>Schema = new mongoose.Schema ({
                     <<Item>>: {
@@ -70,7 +70,9 @@ Folder Structure
                         required: [true, "title is required"],
                         minlength: [6, "title must be at least 6 characters long"] 
                     }
-                })
+                },
+                    { timestamps: true }
+                );
 
 
         module.exports = mongoose.model("<<ModelName>>", <<ModelName>>Schema);
@@ -83,15 +85,19 @@ Folder Structure
 
         <<ModelName>>.controller.js 
 
-            const <<ModelName>> = require ("../models.<<modelName>>.model");
+            const <<ModelName>> = require ("../models/<<modelName>>.model");
 
             //implement your CRUD functionality-Label Errors individually for recognition 
 
             //Find All 
-            module.export.findAll<<ModelNamePlural>> = (req, res) => {
+            module.exports.findAll<<ModelNamePlural>> = (req, res) => {
                 <<ModelName>>.find()
-                    .then((all<<ModelNamePlural>>) => res.json(all<<ModelNamePlural>>))
-                    .catch((err) => res.json({message: "Find All: Something went wrong", error: err}));
+                    .then((all<<ModelNamePlural>>) => {
+                        res.json(all<<ModelNamePlural>>)
+                    })
+                    .catch((err) => {
+                        res.json({message: "Find All: Something went wrong", error: err})
+                });
             }
 
             //Find One 
@@ -105,7 +111,7 @@ Folder Structure
 
     Routes 
 
-        const <<ModelName>>Controller = require("../controllers/<<ModelName>>.controller);
+        const <<ModelName>>Controller = require("../controllers/<<ModelName>>.controller");
 
         module.exports = app => {
             app.get('/api/<<ModelName>>', <<ModelName>>Controller.findAll<<ModelNamePlural>>);
@@ -121,7 +127,7 @@ Inside of server.js
         const port = 8000;
         const cors = require('cors');
 
-        require('.config/mongoose.config);
+        require('./config/mongoose.config');
 
 
         app.use(express.json(), express.urlencoded({extended:true}));
@@ -130,7 +136,7 @@ Inside of server.js
             //AllMyDatabaseRoutes;
         //alt to the previous one. 
 
-        require('.routes/<<modelName>>.routes')(app);
+        require('./routes/<<modelName>>.routes')(app);
 
         app.listen(port, () => console.log(`the server is all filed up on port ${port}`));
 
