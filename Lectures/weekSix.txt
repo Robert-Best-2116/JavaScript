@@ -1,0 +1,29 @@
+
+
+3/15 
+
+    Office hour, 
+        going over planted errors in the project manager 
+
+                app.use(
+                cors({
+                    credentials: true,
+                    origin: "http://localhost:3000",
+                })
+                );
+    
+        May be useful if having issues getting code to be accepted from the front end to the back end. 
+
+
+        good way to test out if your server is even working/accepting routes, use your Postman 
+
+
+    Lecture
+
+        you can wrap your browser router in your index.js
+
+        use the key in the table for the Id of the player 
+
+            <tr key={player._id}
+
+        you can link the bootstrap cdn in the index.html 

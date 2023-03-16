@@ -74,6 +74,8 @@ Folder Structure
 
 
         module.exports = mongoose.model("<<ModelName>>", <<ModelName>>Schema);
+
+        
         
 
 
