@@ -1,0 +1,174 @@
+
+
+Intro 
+
+    Up to this point, we have been separating our front end and back end entirely. When we use create-react-app, we use the command npm run start, to server our React application. After our folder modularization and inclusion of our server.js or rather nodemon serer.js to server our Express application. now is the time to get these separate applications to talk to one another. The way we do this is by building ou react project so that it creates the HTML, CSS and Javascript files we need for our SPA. Then, we can point it to within our Express project. In the following lesions we will learn how to set up our Full Stack MERN project, and tie all of the technologies together. 
+
+    React Works with any-Backend 
+
+        We will be using the Axios library in our React project to make requests to our server. It is important to remember that React does not care about the language running on our server. React will simply make requests to our server and get responses. Because we are working under the full-stack JavaScript paradigm MERN. We will make our requests to our express server but react is agnostic and can work with any server. 
+
+
+Full Stack MERN 
+
+    Lets jump right into creating our full stack MERN project. First create a new folder called my new project and cd into it. 
+
+        mkdir newProject
+        cd newProject
+
+    Next we create the server file and cd into it 
+
+        mkdir server 
+        cd server 
+
+    next we create our new server.js file 
+
+        touch server.js 
+
+    create a new project via 
+
+        npm init -y 
+
+    this will create the package.json for our server. We then need to install our dependencies 
+
+        npm install express mongoose 
+
+    within the server.js we need to require express and setup our port 
+
+        const express = require('express');
+        const app = express();
+        const port = 8000;
+            
+        app.listen(port, () => console.log(`Listening on port: ${port}`) );
+
+    after that we modularize our project structure 
+
+        mkdir controllers, config, routes, models 
+
+    do not forget to create the .gitignore and put /node_modules in it
+
+        touch .gitignore 
+        echo node_modules/ > .gitignore 
+
+    That is the setup for our backend. Now we need to set up our react front end, cd into the parent folder, and create the react app labeled client 
+
+        npx create-react-app client 
+
+    Now that the react project is built, you will be running two different servers, the front end server with live reloading and the express server. 
+
+
+Hello World 
+
+    Our Controller Logic 
+
+        Now that we have the basic set up, let's review each step as we create the rest of our project in the form of a "Hello World" full stack MERN application. 
+
+        Lets start by adding a controller within the controllers folder called person.controller.js 
+
+            module.exports.index = (request, response) => {  //We are exporting a key:val pair of index : function
+                response.json({     // This is where we're setting the API's response to the requesting client
+                message: "Hello World"
+                });
+            }
+
+    Our Routes 
+
+        Next, in the routes folder, let's create the person.routes.js file 
+
+        After requiring our controller file and assigning our controller's exported logic to a variable, we will export an anonymous arrow function that requires an app as its parameter. The parameters value or argument, will be assigned in our server.js which will be the express server object its self. The function consists of lines that include our HTTP verb, the request's route and what our API is supposed to do when we hit that route. In the following, a get request to the /api route is to look to PersonCounter, find the value that goes with the index. 
+
+
+            const PersonController = require('../controllers/person.controller');  //Import the code from Code Block 1
+            module.exports = (app) => {
+                app.get('/api', PersonController.index);
+            }
+
+    
+    Linking our Routes to our Server.js 
+
+        After setting up our controller logic and our routes, we have a route that ends in /api which will simply respond to the client request with a response object containing a message key, and a value of hello world. Lets link this to our server.js  
+
+            const express = require('express');
+            const app = express();
+            require('./routes/person.routes')(app);   // We're importing the routes export. 
+            // These two lines are the long-hand notation of the code above. They better show what's going on.
+                // const personRoutes = require("./routes/person.routes");  <-- assign the exported function to a const
+                // personRoutes(app);     <-- invoke the function and pass in the express "app" server
+            app.listen(8000, () => {
+                console.log("Listening at Port 8000")
+            })
+
+        Now, when we make a request to localhost:8000/api, our server will send back a response object with the following JSON object included ie our message: "Hello World" 
+
+
+    Now lets get our React Front-end set up. 
+
+        Change directories into your React project, called client, and run the following 
+
+            npm install axios 
+
+        We are installing the axios library so we can easily make a request to our backend. 
+        In planning ahead, let's create a new folder inside the src folder to hold all of your functional components. We will name it components and we will discuss the purpose of our views folder later on. 
+
+    Setting up our PersonForm Component 
+
+        Within the src/components folder, create a new file called PersonForm.js in the PersonForm.js file, we will make an API request and display our message. We will be using the useEffect hook in order to make the API call immediately upon rendering and save the message in state. 
+
+            import React, { useEffect, useState } from 'react'
+            import axios from 'axios';
+            const PersonForm= () => {
+                const [ message, setMessage ] = useState("Loading...")
+                useEffect(()=>{
+                    axios.get("http://localhost:8000/api")
+                        .then(res=>setMessage(res.data.message))
+                        .catch(err=>console.log(err))
+                }, []);
+                return (
+                    <div>
+                        <h2>Message from the backend: {message}</h2>
+                    </div>
+                )
+            }
+            export default PersonForm;
+
+        We are setting the default message as "Loading..". Next, in the App.js file, you will need to import the PersonForm component and include it as a child of our App component as follows. 
+
+            import React from 'react';
+            import PersonForm from './components/PersonForm';
+            function App() {
+              return (
+                <div className="App">
+                  <PersonForm/>
+                </div>
+              );
+            }
+            export default App;
+
+        At this point, you can start your backend server using the command nodemon server.js and your React app via npm run start in two different consoles / terminals. Once you visit it, you will end up just seeing "Loading.." as your message. Why you ask? This is because we are making a request to our server from a different origin. 
+
+        If you look in your browser's console, it will show an error message pointing to CORS, Cross Origin Resource Sharing. The browser considers the two servers to be different "origins" because react is running on port 3000 and your node/express api server is running on port 8000. Browsers by default consider this an unsafe practice and so they require the API server to specifically allow this type of request. The react client cannot be configured to override this behavior. 
+
+        So stop the express server! and we'll install a workaround 
+
+    CORS 
+
+        cd into your server file, and run 
+
+            npm install cors 
+
+        This will install the ability to make cross-origin requests. Now, we will need to add the cors functionality to our sever.js as the following code shows. 
+
+            const express = require('express');
+            const cors = require('cors')    /* This is new */
+            const app = express();
+            app.use(cors())                 /* This is new */
+            /* This is a short-hand notation we use: */
+            require('./routes/person.routes')(app);
+            /* These two lines are the long-hand notation of the above code, to better illustrate what's going on: */
+            /* const personRoutes = require("./routes/person.routes"); */
+            /* personRoutes(app); */
+            app.listen(8000, () => {
+                console.log("Listening at Port 8000")
+            })
+
+        Restart the server again and refresh the browser! You'll see that you can now make cross origin requests in our project. When you refresh in your react app, you should briefly see "Loading.." as the message. Which will then be replaced by "Hello World" Congratz, we now have our first ull stack MERN app. Next, we will use this basic boiler-plate in order to build out a Full-Stack CRUD MERN Application. 

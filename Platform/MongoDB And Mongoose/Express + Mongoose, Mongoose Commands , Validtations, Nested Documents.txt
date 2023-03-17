@@ -388,3 +388,22 @@ Nested Documents
             },
             {timestamps: true }
         ); 
+
+
+    Since one user can have many bank accounts, we determine that relationship by nesting the BankAccountSchema into an array. This basically means that the field bankAccounts will be an array of nothing but BankAccount objects. Since each bank account can have many transactions, we can nest a TransactionSchema into our BankAccountSchema 
+
+        const TransactionSchema = new mongoose.Schema(
+            {
+                amount: { type: Number, required: true}, 
+                vender: { type: String, required: true}
+            }, {timestamps: { createdAt: true} }
+        );
+
+        const BankAccountSchema = new mongoose.Schema(
+            {
+                accountType: {type: String, required: true},
+                balance: {type: Number, default: 0},
+                transactions: [TransactionSchema]
+            },
+            {timestamps: true}
+        );

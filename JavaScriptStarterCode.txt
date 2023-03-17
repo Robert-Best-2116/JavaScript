@@ -5,11 +5,10 @@ Beginning
     Create parent folder
 
     npm create-react-app client 
+
     cd client 
 
-    npm start //note might not do this until the end in the server folder. 
-
-    npm install axios react-router-dom
+    npm install axios react-router-dom 
 
 Working With Backend 
 
