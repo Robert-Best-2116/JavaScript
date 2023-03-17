@@ -27,3 +27,10 @@
             <tr key={player._id}
 
         you can link the bootstrap cdn in the index.html 
+
+
+3/16 
+
+    Office hour
+
+        going over update. 

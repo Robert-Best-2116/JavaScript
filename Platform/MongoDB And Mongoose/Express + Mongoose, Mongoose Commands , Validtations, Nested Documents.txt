@@ -363,4 +363,28 @@ Validations
 
             https://mongoosejs.com/docs/validation.html
 
-    
+
+Nested Documents 
+
+    Because MongoDB stores data as JSON objects, we have the ability to store any data type, including arrays and nested objects, we want inside of a single object. This helps make nested documents so simple. A nested document is a mongoose schema that contains a field with the value being a completely separate mongoose schema. for example, a super simple example of a User schema that can have many friends might look like this 
+
+        const UserSchema = new mongoose.Schema({
+            fName: String,
+            lName: String,
+            friends: []
+        })
+
+        nesting documents can look super simple, but we need to take caution because it can become real easy to store duplicate data in our database 
+
+    Lets run through a more complex example, say we are creating a Bank Account application. Our User schema would look something like this: 
+
+        const UserSchema = new mongoose.Schema(
+            {
+                fName: String,
+                lName: String,
+                email: String,
+                password: String,
+                bankAccounts: [BankAccountSchema]
+            },
+            {timestamps: true }
+        ); 
