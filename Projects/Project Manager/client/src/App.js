@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductOne from './components/ProductOne';
+import ProductEdit from './components/ProductEdit';
 import Main from './views/Main';
 
 
@@ -11,6 +12,7 @@ function App() {
         <Routes>
             <Route element={<Main/>} path="/"/>
             <Route element={<ProductOne/>} path="/product/:id"/>
+            <Route element={<ProductEdit/>} path="/product/edit/:id" />
 
         </Routes>  
       </BrowserRouter>

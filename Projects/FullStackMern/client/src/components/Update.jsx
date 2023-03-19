@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 const Update = (props) => {
+    
     const { id } = useParams(); //this process is identical to the one we used with our Details.js component
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
     const navigate = useNavigate();
+
     // retrieve the current values for this person so we can fill
     // in the form with what is in the db currently
     useEffect(() => {
