@@ -1,12 +1,18 @@
 import React, { useState} from 'react'
 import axios from 'axios';
 
-const ProductForm = () => {
+const ProductForm = (props) => {
 
+        //Getters and Setters for Product Information
+
+        const {products, setProducts} = props;
         const [title, setTitle] = useState("");
         const [price, setPrice] = useState("");
         const [description, setDescription] = useState("");
 
+        //Navigate Const
+
+        //Form Submission
         const onSubmitHandler = (e) => {
 
             e.preventDefault();
@@ -18,15 +24,16 @@ const ProductForm = () => {
             }) 
                 .then(res =>{
                     console.log(res.data);
-                    //set([...[products, res.data]]);
+                    setProducts([...products, res.data.product]);
             }) 
-                .catch(err => console.log(err))
-
+                .catch(err => {
+                    console.log(err)
+                })
+            
         }
 
 
-
-
+        //Form 
   return (
     <form onSubmit={onSubmitHandler}> 
         <div>
