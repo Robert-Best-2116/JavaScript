@@ -57,7 +57,7 @@ Folder Structure
 
     Models 
 
-        modelName.model.js 
+        <<modelName>>.model.js 
 
             const mongoose = require('mongoose');
 
@@ -102,7 +102,7 @@ Folder Structure
             //Find One 
             module.exports.findOne<<ModelName>> = (req, res) => {
             <<ModelName>>.findById({ _id: req.params.id })
-                .then(oneJoke => {
+                .then(one<<modelName>> => {
                     res.json({ <<modelName>>: one<<modelName>> })
                 })
                 .catch((err) => {
@@ -172,7 +172,7 @@ Inside of server.js
 
 
         require('./config/mongoose.config');
-        require('./routes/<<modelName>>.routes')(app);
+        require('./routes/<<modelName>>.route')(app);
 
         app.listen(port, () => console.log(`the server is all filed up on port ${port}`));
 
