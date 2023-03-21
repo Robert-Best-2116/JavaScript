@@ -59,7 +59,7 @@ const ProductEdit = () => {
         <div>
             <p>
                 <label>Price: </label>
-                <input type="number" value={price} min="0" onChange={(e) => setPrice(e.target.value)}/>
+                <input type="double" value={price} min="0" onChange={(e) => setPrice(e.target.value)}/>
             </p>
         </div>
         <div>

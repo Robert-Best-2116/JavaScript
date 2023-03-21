@@ -1,14 +1,35 @@
 
 
+*Note- Items labeled <<ModelName>> require the model name to be capitalized 
+*Note- Items labeled <<modelName>> require the model name to be lowercase 
+*Note- Items labeled <<ModelNamePlural>> require the model name to be plural
+
 Beginning
 
-    Create parent folder
+    Create parent folder terminal
+
+    mkdir server
 
     npm create-react-app client 
 
     cd client 
 
     npm install axios react-router-dom 
+
+    touch .gitignore
+
+
+Inside of the Server File in the Terminal
+
+    //Creates our package json
+    run npm init -y 
+
+    npm install express mongoose cors
+
+    mkdir config controllers models routes
+
+    touch server.js .gitignore
+
 
 Working With Backend 
 
@@ -31,13 +52,6 @@ Working With Backend
         .gitignore
 
             /node_modules 
-
-Inside of the Server File in the Terminal
-
-    //Creates our package json
-    run npm init -y 
-
-    npm install express mongoose cors
 
 
 Folder Structure
@@ -75,9 +89,6 @@ Folder Structure
 
 
         module.exports = mongoose.model("<<ModelName>>", <<ModelName>>Schema);
-
-        
-        
 
 
     Controllers 
@@ -156,6 +167,7 @@ Folder Structure
             app.delete('/api/<<modelName>>/:id', <<ModelName>>Controller.deleteAnExisting<<ModelName>>);
         }
 
+
 Inside of server.js 
 
     connect your server to express 
@@ -176,6 +188,7 @@ Inside of server.js
 
         app.listen(port, () => console.log(`the server is all filed up on port ${port}`));
 
+
 Running Your Servers
 
     Inside the Terminal-Client Folder
@@ -186,12 +199,10 @@ Running Your Servers
 
         nodemon server.js
 
-Inside Mongoose DB
-    
-    Create your Database make sure it matches the config name. 
+
+*Note- Do Not Forget to add /node_modules to your .gitignore
 
     
-https://www.mysoftkey.com/mongodb/3-default-database-in-mongodb/#:~:text=1.,storing%20of%20metadata%20for%20sharding.
 
 
 

@@ -1,0 +1,64 @@
+
+
+Overview
+
+    So far, we have made a simple CRUD application. However, there are many improvements to be made. This chapter will focus on more advanced React design patterns so that we can make it much more User friendly application. As well as refactoring it so its easer for developers to maintain. 
+
+    We will look at the following: 
+
+        1. Reusing components
+        3. Third party libraries for styling
+        3. Validations 
+
+
+Reusing Components 
+
+    Looking back on our Person List example application in the Full Stack MERN section, you may have noticed us failing to adhere to an important programming principle: Don't Repeat Yourself (DRY) code. A lot of the logic for the form for creating and updating documents from our database is the same. Why should we write similar code over again? Especially if we can make one Form component in React? Let's look at how we would do this by refactoring our code! 
+
+    First, we need to consider the similarities and differences between creating a document and updating one. They both will have the same input fields and same state to track the individual fields via the form. So, that will likely stay within the component. On submissions of the form, they will perform two different actions. One will send a request to our create route. The other will send a request to our update route. 
+
+    We will seek to refactor our PersonForm component to be one thats reuseable, so we will move a lot of the prior creation code into the Main.js and pass what the child PersonForm needs via props. Whereas the UpdatePerson component will import the PersonForm to use as a child component, which will also pass what the child needs via props. 
+
+    First lets set up our updated Main.js view component
+
+        import React, { useEffect, useState } from 'react'
+        import axios from 'axios';
+        import PersonForm from '../components/PersonForm';
+        import DisplayAll from '../components/DisplayAll';
+        const Main = () => {
+            const [personList, setPersonList] = useState([]);
+            useEffect(() => {
+                axios.get('http://localhost:8000/api/people')
+                    .then(res => {
+                        setPersonList(res.data)
+                    })
+                    .catch((err)=>console.log(err))
+            }, [])
+            const removeFromDom = personId => {
+                axios.delete("http://localhost:8000/api/people/" + personId)
+                .then((res)=>{
+                    console.log(res);
+                    console.log(res.data);
+                    setPersonList(personList.filter(person=> person._id !== personId));
+                })
+                .catch((err)=>console.log(err))
+                
+            }
+        const createPerson = personParam => {
+                axios.post('http://localhost:8000/api/people', personParam)
+                    .then(res => {
+                        console.log(res);
+                        console.log(res.data)
+                        setPersonList([...personList, res.data])
+                    })
+                    .catch((err)=>console.log(err))
+            }
+            return (
+                <div>
+                    <PersonForm onSubmitProp={createPerson} initialFirstName="" initialLastName=""/>
+                    <hr />
+                    <DisplayAll personList={personList} removeFromDom={removeFromDom} />
+                </div>
+            )
+        }
+        export default Main;
