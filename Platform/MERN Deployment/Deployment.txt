@@ -1,0 +1,108 @@
+
+
+Deployment 
+
+    Push your code to github
+
+        Before you get started we need to get the project onto GitHub. Change directory into the project folder that contains your client and server folders 
+
+        Inside of this folder, we will be making a file called .gitignore. The .gitignore file will allow us to tell git which files and folders we don't want to commit. As the contents of our node_modules folders are rather large and can be easily re-downloaded, we will be making sure these don't get pushed to GitHub.
+
+            echo node_modules/ > .gitignore
+
+        This command will create a file called .gitignore and make its contents the text node_modules/ 
+
+        Open up the .gitignore file and add the following lines 
+
+            /node_modules
+            /coverage
+            /build
+            .DS_Store 
+            .env 
+
+        Next, we will need to remove any git repositories that already exist inside of our client folder. When we run the npx create-react-app client command, it will automatically add in a git repo by default, and beings we wish to push all of our project to github as one repository, we will need to remove this now. Change the directory from your project folder into the client folder and remove the hidden .git folder using one of the following methods 
+
+            rm -rf .git
+            rm .gitignore
+
+        Next we will initialize a git repository in our project level folder, add all of our code to it, and create a commit with the message "initial commit" 
+
+            inside of your Parent Folder 
+
+                git init 
+                git add * 
+                git commit -m"initial commit"
+
+        Next we need to create a GitHub repository . After logging into GitHub, click on the repositories tab followed by the green button that says "New 
+
+        Next time in your new repository name "MERN-Deployment" works well and click on the "Create repository" button. Note- This guide will refer to your repo as "MERN Deployment". You can replace it with whatever. 
+
+        You can choose to make this repo private if you would like. This process does not require it to be public. Next we will set the remote origin for our project repo on your computer and then push our code up to it. 
+
+            git remote add origin https://github.com/your_github_username/MERN-deployment.git
+            git branch -M main
+            git push -u origin main
+
+        The project is now on github 
+
+    Set Up your server instance on AWS 
+
+        To get started, login to AWS. Search for the EC2 Dashboard, click on "Instances". To create the new instance select the "Launch Instances" button in the upper right portion of the screen. 
+
+        The first thing you will need to do is choose your server, you want Amazon Machine Image. We will need to select our AMI type, which is UBUNTU. We want to choose version 20.04 LTS, we are choosing this one because it supports MongoDB while 22.04 does not. 
+
+        Select instance type t2.micro, it is the largest instance that is still Free tier eligible. Again, we will want to pick the smallest server possible so that we are not charged. 
+
+        Next we will configure the key pair, this will allow me to connect to my instance as an admin. This key can not be shared. Never, meaning NEVER upload your PEM key to a git repo, or put it in a public place on the internet. This is a literal key to access our instance, and misplacing it can potentially allow bad actors to install malicious software, Always store your PEM keys in a safe local folder. 
+
+        Name your key pair, ideally after your project, set the types to RSA and .pem 
+
+        Next we will configure our security group. We want to limit the amount of computers that can access our server through SSH, so we recommend that you set your SSH traffic to My IP. If you are on a public wifi or you change your locations regularly, your IP address will change. If you are having trouble using SSH, please confirm that your IP address is yours. 
+
+        We will also want to enable all HTTPS and HTTP traffic. After all this is a server. 
+
+        Next, we are going to configure our storage, click advanced to see the drop down menu.  we will want to make sure we stay in Free Tier eligible 
+
+        You can now Launch your instance and return to the dashboard. 
+
+Connecting your database 
+
+    After clicking on "Launch Instances" you will see a message showing the "Launch Status". Click on "View Instances" and you will see your instance in your "Instances" web page. It quickly shows as "Running" 
+
+    If you choose to name your instance, hover your mouse over the "-" and select the edit button and give it a name to make it easy to identify in the future. 
+
+    Select your instance and click the connect Button. The new page will show you the SSH (security shell) connection information that is specific to your instance.
+
+    In your terminal, cd into the directory hat contains your pem key. Once there run the commands from the modal on the EC2 dashboard. The first command will properly set the permissions for a key name keyname.pem, the second will SSH into your AWS server instance. 
+
+        Note-In Windows CMD you do not need to run the chmond command. 
+
+    If you are promoted that the authenticity of the host cannot be established, type the word "yes" to continue. You should now be connected to your server instance. 
+
+Getting our code onto the server instance 
+
+    There are a few steps we need to take initially getting everything set up
+
+        sudo apt update 
+        sudo apt install nodejs nginx git ca-certificates -y 
+
+    These commands will make sure the server has up to date software, then install: Node.js, Node Package Manager, NGINX (pronounced "engine x") and git. the "-y" answers yes to the prompt if you want to install all of this software. 
+
+Node Version 
+
+    By default, we will get getting version 8.10.0 when we install nodejs, and we need to get a more recent version for many our of packages to run happily on the server. To overcome this we will install a PPA (Personal Package Archive) that will allow us to get a newer version of nodejs. 
+
+        nodejs -v
+        # this should print out version 10.19.0
+        curl -sL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
+        sudo bash nodesource_setup.sh
+        sudo apt-get install -y nodejs
+        node -v
+        # this should now print out version 14.7.0 or newer
+        sudo apt install build-essential
+
+    Now that we have installed NGINX (our server software), we should be able to navigate to our browser to our server's public IP address and see the default NGINX splash screen. 
+
+    Important if you do not see the Welcome to NGINX message you either did not install NGINX in the previous step, your url is trying to connect using secure http (https) or you did not set up your Security Group correctly. Start by verifying your URL begins with HTTP:// and then the nginx service is running by using the command service nginx status. 
+
+    

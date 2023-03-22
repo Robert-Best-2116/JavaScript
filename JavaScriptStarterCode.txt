@@ -113,8 +113,8 @@ Folder Structure
             //Find One 
             module.exports.findOne<<ModelName>> = (req, res) => {
             <<ModelName>>.findById({ _id: req.params.id })
-                .then(one<<modelName>> => {
-                    res.json({ <<modelName>>: one<<modelName>> })
+                .then(one<<ModelName>> => {
+                    res.json({ <<modelName>>: one<<ModelName>> })
                 })
                 .catch((err) => {
                     res.json({ message: 'Something went wrong', error: err })
@@ -124,7 +124,7 @@ Folder Structure
             module.exports.createNew<<ModelName>> = (req, res) => {
             <<ModelName>>.create(req.body)
                 .then(new<<ModelName>> => {
-                    res.json({ <<modelName>>: new<<modelName>> })
+                    res.json({ <<modelName>>: new<<ModelName>> })
                 })
                 .catch((err) => {
                     res.json({ message: 'Something went wrong', error: err })
@@ -157,7 +157,7 @@ Folder Structure
 
     Routes 
 
-        const <<ModelName>>Controller = require("../controllers/<<ModelName>>.controller");
+        const <<ModelName>>Controller = require("../controllers/<<modelName>>.controller");
 
         module.exports = app => {
             app.get('/api/<<modelName>>', <<ModelName>>Controller.findAll<<ModelNamePlural>>);

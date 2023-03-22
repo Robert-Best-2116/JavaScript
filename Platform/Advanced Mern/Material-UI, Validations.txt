@@ -1,0 +1,283 @@
+
+
+Material-UI 
+
+    One of the great things about React is the number of different libraries you can plug in with it. One such library is the Material-UI. You can use Material-UI with React to improve the styling of your apps. One of the important thing we have talked about is reusing components. Material-UI is filled with a bunch of reusable components that you can use to make your site easily look great. Lets create a new react app 
+
+        npx create-react-app client 
+
+    Once thats crated cd into the client folder and install 
+
+        npm install @material-ui/core 
+
+    This is all we need to install. Like Bootstrap Material-UI has plenty of different components that you can use. We won't go through all of them but lets look at a couple of items by building a registration form. 
+
+Paper and Cards 
+
+    Material-UI has different surfaces we can use in order to make a component look nice. A paper component is one that will give a nice background and potentially some elevation to a component. 
+
+        import { Paper } from '@material-ui/core';
+            ...
+            <Paper elevation={3}>
+                <p>Some text here</p>
+            </Paper>
+
+        Depending on how you want the component to look, you can give it different elevations to make it appear "higher up" on the page. 
+
+        You make want to use a card as well: 
+
+            import { Card, CardContent } from '@material-ui/core';
+            ...
+            <Card>
+                <CardContent>
+                    <h1>This is content within my card</h1>
+                </CardContent>
+            </Card>
+        
+    Buttons 
+
+        Material-UI has very nice looking buttons as well. It is as simple as importing and implementing it. 
+
+            import { Button } from '@material-ui/core';
+            ...
+            <Button>
+                Click Me
+            </Button>
+
+    Forms 
+
+        Material can make very nice looking forms as well. We can do something simple like 
+
+            <TextField variant="filled"/>
+
+        The documentation for Material-UI is extremely easy to read.
+
+    Example 
+
+        Let's look at a quick example of how we create a Registration Form. We will put the form on a paper component. Then, we can put our input fields within the Paper components as Children. 
+
+            components/LoginForm.js 
+
+                import React from 'react';
+                import {
+                    Paper,
+                    FormControl,
+                    InputLabel,
+                    OutlinedInput,
+                    Button
+                } from '@material-ui/core';
+                const styles = {
+                    paper: {
+                        width: "20rem", padding: "1rem"
+                    },
+                    input: {
+                        marginBottom: "1rem"
+                    },
+                    button: {
+                        width: "100%"
+                    }
+                }
+                function LoginForm() {
+                    return (
+                        <Paper elevation={3} style={styles.paper}>
+                            <h2>Login Form</h2>
+                            <form>
+                                <FormControl variant="outlined" style={styles.input}>
+                                    <InputLabel>Username</InputLabel>
+                                    <OutlinedInput type="text"/>
+                                </FormControl>
+                                <FormControl variant="outlined" style={styles.input}>
+                                    <InputLabel>E-mail</InputLabel>
+                                    <OutlinedInput type="email"/>
+                                </FormControl>
+                                <FormControl variant="outlined" style={styles.input}>
+                                    <InputLabel>Password</InputLabel>
+                                    <OutlinedInput type="password"/>
+                                </FormControl>
+                                <FormControl variant="outlined" style={styles.input}>
+                                    <InputLabel>Password</InputLabel>
+                                    <OutlinedInput type="password"/>
+                                </FormControl>
+                                <Button type="submit" variant="contained" color="primary">
+                                    Register
+                                </Button>
+                            </form>
+                        </Paper>
+                    )
+                }
+                export default LoginForm;
+
+    Additional Libraries 
+        
+        There are many libraries out there to assist you with the deign of your website. Although we are covering Material-UI, you can use whatever you would like to use to make your website look the way you want, including your own CSS. There is also Reactstrap  https://reactstrap.github.io/, which helps you use Bootstrap components in React. Another one is Semantic UI https://react.semantic-ui.com/.
+
+
+Validations 
+
+    With any web application, we would like to make sure the data being inserted into our database is clean. We do not want erroneous or incomplete data to make its way into our database In order to prevent this, we can validate the data before hand. We will be performing our validations on the backend. This will be accomplished by making a request to our API. If the response contains an error. Then we will render the errors on our front end. For example, let's say we have an API that creates books. The BookSchema looks like the following: 
+
+        const mongoose = require('mongoose');
+        const BookSchema = new mongoose.Schema({
+            title: {
+                type: String,
+                required: [
+                    true,
+                    "Title is required"
+                ]
+            },
+            numberOfPages: {
+                type: Number,
+                required: [
+                    true,
+                    "Pages is required"
+                ]
+            }    
+        }, { timestamps: true });
+        module.exports = mongoose.model('Book', BookSchema);
+
+    We have a title, number of pages and a timestamp. Both the title and the number of pages in required. 
+    
+    Our controller is using a different syntax to export our function as a key( create: ) in an object instead of exporting each individual function independently as we have done before. You can write as many keys and functions as you would like. The controller for our books will look like this 
+
+        const Book = require('../models/book.model');
+        module.exports = {
+            create: (request, response) => {
+                const { title, pages } = request.body;
+                Book.create({
+                    title: title,
+                    numberOfPages: pages
+                })
+                    .then(book => response.json(book))
+                    .catch(err => response.status(400).json(err))
+            }
+        }
+
+    We are making this a 400 response so that our axios.post request will catch it as an error. If we make a request without the title or numberOfPages, we will see a response like this. 
+
+        {
+            "errors": {
+                "title": {
+                    "message": "Title is required",
+                    "name": "ValidatorError",
+                    "properties": {
+                        "message": "Title is required",
+                        "type": "required",
+                        "path": "title"
+                    },
+                    "kind": "required",
+                    "path": "title"
+                },
+                "numberOfPages": {
+                    "message": "Pages is required",
+                    "name": "ValidatorError",
+                    "properties": {
+                        "message": "Pages is required",
+                        "type": "required",
+                        "path": "numberOfPages"
+                    },
+                    "kind": "required",
+                    "path": "numberOfPages"
+                }
+            },
+            "_message": "Book validation failed",
+            "message": "Book validation failed: numberOfPages: Pages is required, title: Title is required",
+            "name": "ValidationError"
+        }
+
+    This response we have contains all of the information we need to let the client know that the request has failed. When we make a request in our react project, we can check if there are errors in the response and conditionally render other information. 
+
+    So, our React component will need to understand the structure of this response and then prepare to display them. Lets look at what our component will look like. 
+
+        import React, { useState } from 'react';
+        import axios from 'axios';
+        const Main = () {
+            const [title, setTitle] = useState("");
+            const [pages, setPages] = useState(0);
+            //Create an array to store errors from the API
+            const [errors, setErrors] = useState([]); 
+            const onSubmitHandler = e => {
+                e.preventDefault();
+                //Send a post request to our API to create a Book
+                axios.post('http://localhost:8000/api/books', {
+                    title,
+                    pages
+                })
+                    .then(res=>console.log(res)) // If successful, do something with the response. 
+                    .catch(err=>{
+                        const errorResponse = err.response.data.errors; // Get the errors from err.response.data
+                        const errorArr = []; // Define a temp error array to push the messages in
+                        for (const key of Object.keys(errorResponse)) { // Loop through all errors and get the messages
+                            errorArr.push(errorResponse[key].message)
+                        }
+                        // Set Errors
+                        setErrors(errorArr);
+                    })            
+            }
+            return (
+                <div>
+                    <form onSubmit={onSubmitHandler}>
+                        {errors.map((err, index) => <p key={index}>{err}</p>)}
+                        <p>
+                            <label>Title</label>
+                            <input type="text" onChange={e => setTitle(e.target.value)} />
+                        </p>
+                        <p>
+                            <label>Pages</label>
+                            <input type="text" onChange={e => setPages(e.target.value)} />
+                        </p>
+                        <input type="submit" />
+                    </form>
+                </div>
+            )
+        }
+        export default Main;
+
+    We are going through response to find all the errors if our response sends back a 400 response. If there are errors, we will render all of them via the map method above the form inputs. An alternative way of presenting the errors is to put each error next to its corresponding input. That would be done like so. 
+
+        import React, { useState } from 'react';
+        import axios from 'axios';
+        const Main = () {
+            const [title, setTitle] = useState("");
+            const [pages, setPages] = useState(0);
+            //Create an array to store errors from the API
+            const [errors, setErrors] = useState([]); 
+            const onSubmitHandler = e => {
+                e.preventDefault();
+                //Send a post request to our API to create a Book
+                axios.post('http://localhost:8000/api/books', {
+                    title,
+                    pages
+                })
+                    .then(res=>console.log(res)) // If successful, do something with the response. 
+                    .catch(err=>{
+                        setErrors(err.response.data.errors);
+                    })            
+            }
+            return (
+                <div>
+                    <form onSubmit={onSubmitHandler}>
+                        {errors.map((err, index) => <p key={index}>{err}</p>)}
+                        <p>
+                            <label>Title</label>
+                            <input type="text" onChange={e => setTitle(e.target.value)} />
+                            { errors.title ? 
+                                <p>{errors.title.message}</p>
+                                : null
+                            }
+                        </p>
+                        <p>
+                            <label>Pages</label>
+                            <input type="text" onChange={e => setPages(e.target.value)} />
+                            { errors.numberOfPages ? 
+                                <p>{errors.numberOfPages.message}</p>
+                                : null
+                            }
+                        </p>
+                        <input type="submit" />
+                    </form>
+                </div>
+            )
+        }
+        export default Main;
+
+    This approach will only display an error for an input if that error object exists. Thus, we will only see errors for inputs that did not pass the backend schema validation. 
