@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
         name: {
             type: String,
             required: [true, "Name is required"],
-            minlength: [5, "Name must be at least 5 characters long"] 
+            minlength: [3, "Name must be at least 3 characters long"] 
         }
     },
         { timestamps: true }

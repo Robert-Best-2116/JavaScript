@@ -162,7 +162,7 @@ Folder Structure
         module.exports = app => {
             app.get('/api/<<modelName>>', <<ModelName>>Controller.findAll<<ModelNamePlural>>);
             app.get('/api/<<modelName>>/:id', <<ModelName>>Controller.findOne<<ModelName>>);
-            app.put('/api/<<modelName>>/:id', <<ModelName>>Controller.update<<ModelName>>ById);
+            app.patch('/api/<<modelName>>/:id', <<ModelName>>Controller.update<<ModelName>>ById);
             app.post('/api/<<modelName>>', <<ModelName>>Controller.createNew<<ModelName>>);
             app.delete('/api/<<modelName>>/:id', <<ModelName>>Controller.deleteAnExisting<<ModelName>>);
         }
@@ -184,7 +184,7 @@ Inside of server.js
 
 
         require('./config/mongoose.config');
-        require('./routes/<<modelName>>.route')(app);
+        require('./routes/<<modelName>>.routes')(app);
 
         app.listen(port, () => console.log(`the server is all filed up on port ${port}`));
 

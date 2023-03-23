@@ -12,7 +12,8 @@ const PersonList = (props) => {
     
     useEffect(() => {
         axios.get('http://localhost:8000/api/people')
-            .then(res => setPeople(res.data));
+        .then(res => setPeople(res.data));
+        console.log(people)
     }, [])
     
     const removeFromDom = personId => {
