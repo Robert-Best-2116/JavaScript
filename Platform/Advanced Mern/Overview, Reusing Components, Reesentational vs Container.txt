@@ -62,3 +62,226 @@ Reusing Components
             )
         }
         export default Main;
+
+
+    Before going any further, reflecting on the differences between this code block and the prior block from the mern full stack section here. What jumps out? Can you guess what the changes were made? 
+
+    The differences are as follows: 
+
+        1. We've moved almost all state-altering functionality from this view components children, (Create and DisplayAll) to the parent for a more centralized state management. 
+
+        2. Our createPerson function now takes in an object as a parameter (personParam). State that this is our local PersonForm child component, (firstName, lastName), will be combined into an object and passed through as an argument in the parameter'as place when the function is invoked/called in the PersonForm. 
+
+        3. in our return code, the PersonForm is receiving a generic property key of onSubmitProp with a property value of the aforementioned createPerson function. In UpdatePerson, this will look more like onSubmitProp={updatePerson}, as the function will need to change to allow the PersonForm to be reusable with multiple parents. 
+
+        4. Looking back, we can remember our inputs having their value attributes reflect each getter's (firstName, lastName) current value. In the name of re-usability, we will pass those values from the parent to the form. Note here they are empty strings, but with update, we will pass through values from out getOne request (initialFirstName = {person.firstName})
+
+    Next, let's look at how our Parent UpdatePerson component handles passing props through to the PersonForm child component. 
+
+        import React, { useEffect, useState } from 'react'
+        import axios from 'axios';
+        import { useParams } from 'react-router-dom';
+        import PersonForm from '../components/PersonForm';
+        const UpdatePerson = (props) => {
+            const { id } = useParams();
+            const [person, setPerson] = useState({});
+            useEffect(() => {
+                axios.get('http://localhost:8000/api/people/' + id)
+                    .then(res => {
+                        setPerson(res.data);
+                    })
+            }, [])
+            const updatePerson = personParam => {
+                axios.put('http://localhost:8000/api/people/' + id, 
+                personParam)
+                    .then(res => console.log(res));
+            }
+            return (
+                <div>
+                    <h1>Update a Person</h1>
+                    <PersonForm onSubmitProp={updatePerson} initialFirstName={person.firstName}
+                    initialLastName={person.lastName}
+                    />
+                </div>
+            )
+        }
+        export default UpdatePerson;
+
+
+    Notice how the prop keys passed through to Form match those from the Main.js Component exactly. The difference, of course, comes in when we take a peak at the prop values. Rather than getting a value of createPerson, like it did in code block one, the onSubmitProp key now gets a value of update person, so that our PersonForm component will have functionality depending on who its parent it, either Main or UpdatePerson.
+
+    Likewise, our initialFirstName and initialLastName keys no longer have empty strings as values since we want our PersonForm component's inputs to be pre-populated with the individual document's field data. However, we must make one small addition to ensure our PersonForm inputs are populated correctly. Essentially, the PersonForm will be waiting on the result of its parent's useEffect to run and provide a property value for the initialFirstName key, which looks like this {person.firstName}. Unfortunately, this information isn't ready right away, as the PersonForm component rushes to render the JSX immediately before the axios.get() call returns and the person state is updated using the response data. 
+
+    We want to force the PersonForm to wait for our uesEffect to run and get our one Person document, so we will need to create another piece of state. 
+
+         const UpdatePerson = (props) => {
+            
+            const { id } = useParams();
+            const [person, setPerson] = useState({});
+            const [loaded, setLoaded] = useState(false);
+            
+            useEffect(() => {
+                axios.get('http://localhost:8000/api/people/' + id)
+                    .then(res => {
+                        setPerson(res.data);
+                        setLoaded(true);
+                    })
+            }, []) 
+        }
+
+    Using this loaded state is a common practice when attempting to slow a component's rendering process until all of the needed information is available. Let's see how we'll use it in our UpdatePerson component's return.
+
+            return (
+                <div>
+                    <h1>Update a Person</h1>
+                    {
+                    loaded && <PersonForm onSubmitProp={updatePerson} initialFirstName={person.firstName}
+                    initialLastName={person.lastName}
+                    />
+                    }
+                </div>
+            )
+
+    Now don't let the new syntax here throw you off, as this is an easy short-hand for our normal ternary operator: 
+
+        {loaded? 
+        <PersonForm /> :
+        null
+        }
+
+    Now, our PersonForm will wait until our useEffect runs to render, which will allow the inputs to be pre-populated. Since we've done all the leg work in setting up the PersonForm's parent components to ensure they are passing through the correct prop keys and values, let's see how the reuseable Child takes them in and puts it all together. 
+
+        import React, { useState } from 'react'
+        const PersonForm = (props) => {
+
+            const { initialFirstName, initialLastName, onSubmitProp } = props;
+            const [firstName, setFirstName] = useState(initialFirstName);
+            const [lastName, setLastName] = useState(initialLastName);
+
+            const onSubmitHandler = e => {
+                e.preventDefault();
+                onSubmitProp({ firstName, lastName });
+            }
+
+            return (
+                <form>
+                    <p>
+                        <label>First Name</label><br>
+                        <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)}
+                        />
+                    </p>
+                    <p>
+                        <label>Last Name</label><br>
+                        <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}
+                        />
+                    </p>
+                    <input type="submit">
+                </form>
+                
+            )
+        }
+        export default PersonForm;
+
+    Notice the way our useState hooks take in the initialValue keys and think about what that means for a minute. If the PersonForm's parent component is Main.js then after destructuring initialFirstName from the props object, initialFirstName is equal to "" as its value was set in the return of Code Block One. That means, if the PersonForm's parent component is UpdatePerson then the initialFirstName ==== {person.firstName} giving us the value of that specific document's title field, which we can then use to pre-populate our inputs. And our onSubmitHandler, will act in the same way, if its parent is Main then the value is the create function passed through the props. Likewise if its UpdatePerson then the update function is now the value. 
+
+
+
+Reusing Components Part 2 
+
+    In our project, we have a "Delete" button in our list of People. Regardless of what we want to do after we send that request to the API, the call to the API and the button will be the same. So we are going to break this down into a different component, which accepts a callback function as a prop that will execute after making the API call. Let's break out our delete button into a separate component, where we will accept a personId and a callback function as props and put all of the delete logic within that component. 
+
+        import React from 'react'
+        import axios from 'axios';
+        const DeleteButton = (props) => {
+            const { personId, successCallback } = props;
+            const deletePerson = e => {
+                axios.delete('http://localhost:8000/api/people/' + personId)
+                    .then(res=>{
+                        successCallback();
+                    })
+            }
+            return (
+                <button onClick={deletePerson}>
+                    Delete
+                </button>
+            )
+        }
+        export default DeleteButton;
+
+    As we can see, the Delete button will run the deletePerson method whenever it is run. Then, when it is successful, it will execute the successCallback function that was passed down in the props. Let's look at how our PersonList component will change. 
+
+        import React, { useEffect, useState } from 'react'
+        import { Link } from "react-router-dom";
+        import axios from 'axios';
+        import DeleteButton from './DeleteButton';
+        const PersonList = (props) => {
+            const [people, setPeople] = useState([]);
+            useEffect(() => {
+                axios.get('http://localhost:8000/api/people')
+                    .then(res => setPeople(res.data));
+            }, [])
+            const removeFromDom = personId => {
+                setPeople(people.filter(person => person._id !== personId))
+            }
+            return (
+                <div>
+                    {people.map((person, idx) => {
+                        return (
+                            <p key={idx}>
+                                <Link to={"/people/" + person._id}>
+                                    {person.lastName}, {person.firstName}
+                                </Link>
+                                |
+                                <Link to={"/people/" + person._id + "/edit"}>
+                                    Edit
+                                </Link> 
+                                |
+                               <DeleteButton personId={person._id} successCallback={()=>removeFromDom(person._id)}/>
+                            </p>
+                        )
+                    })}
+                </div>
+            )
+        }
+        export default PersonList;
+
+    Now, we have the removeFromDom method that will actually remove the person from our state. This is the method that we are sending down as a prop. Let us add the DeleteButton component to the update page as well. 
+
+        import React, { useEffect, useState } from 'react'
+        import axios from 'axios';
+        import { useNavigate } from "react-router-dom";
+        import PersonForm from '../components/PersonForm';
+        import DeleteButton from '../components/DeleteButton';
+        const Update = (props) => {
+            const { id } = props;
+            const [person, setPerson] = useState();
+            const [loaded, setLoaded] = useState(false);
+            const navigate = useNavigate();
+            useEffect(() => {
+                axios.get('http://localhost:8000/api/people/' + id)
+                    .then(res => {
+                        setPerson(res.data);
+                        setLoaded(true);
+                    })
+            }, [])
+            const updatePerson = person => {
+                axios.put('http://localhost:8000/api/people/' + id, person)
+                    .then(res => console.log(res));
+            }
+            return (
+                <div>
+                    <h1>Update a Person</h1>
+                    {loaded && (
+                        <>
+                            <PersonForm
+                                onSubmitProp={updatePerson}
+                                initialFirstName={person.firstName}
+                                initialLastName={person.lastName}
+                            />
+                            <DeleteButton personId={person._id} successCallback={() => navigate("/")} />
+                        </>
+                    )}
+                </div>
+            )
+        }
+        export default Update;

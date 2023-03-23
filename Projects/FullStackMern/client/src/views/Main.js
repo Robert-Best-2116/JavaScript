@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import PersonForm from '../components/PersonForm';
-import DisplayAll from '../components/DisplayAll';
+import PersonList from '../components/PersonList';
+//import DisplayAll from '../components/DisplayAll';
 
 
 const Main = () => {
@@ -39,12 +40,13 @@ const Main = () => {
             .catch((err)=>console.log(err))
     }
 
+    //<DisplayAll personList={personList} removeFromDom={removeFromDom} />
     
     return (
         <div>
             <PersonForm onSubmitProp={createPerson} initialFirstName="" initialLastName=""/>
             <hr />
-            <DisplayAll personList={personList} removeFromDom={removeFromDom} />
+            <PersonList personList={personList} removeFromDom={removeFromDom} />
         </div>
     )
 }
