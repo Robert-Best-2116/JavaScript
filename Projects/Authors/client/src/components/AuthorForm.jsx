@@ -48,18 +48,13 @@ const AuthorForm = () => {
               } 
                 <label>Name</label>
                 <input type="text" onChange={e => setName(e.target.value)} />
-
               </div>
-            
-            <div>
-              <p>
-              <input type="submit" /> 
-              <button onClick={cancel}>Cancel</button>
-              </p>
-              
-
-            </div>
-
+              <div>
+                <p>
+                <input type="submit" /> 
+                <button onClick={cancel}>Cancel</button>
+                </p>
+              </div>
             </div>
         </form>
     </div>

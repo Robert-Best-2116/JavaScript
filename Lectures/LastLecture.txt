@@ -1,0 +1,73 @@
+
+Job Search Tips and Tricks 
+
+    Start now with the process, do not wait till the school is over to start. Networking makes it a lot easier to get into the job. start being active on linked in, posts etc, 
+
+    look into Danny Thompson-How to optimize your linked in. 
+
+    The more you use your linkedin the higher your visibility for the algorithm when your being searched. 
+
+    Look into square space, as well as word press, square space is a lot easer than word press
+
+    Fiver is an idea to check for the pricing of your free lancing, though be aware of the fact that its oversees, and its cheaper
+
+    also look into Up work! 
+
+    with timing, triple your estimate, just incase something goes wrong, better to overshoot than undershoot. 
+
+    We have a skill that a lot of people don't, don't be afraid to charge, don't just give numbers, ask about the project complexity. You can look on indeed to check the hourly rate, and price things out based upon what your time is worth.
+
+    Broaden your horizon for searching for jobs, There are a mountain of jobs that if you know a little bit about code, that open a lot of doors, you can also look into things like solution engineer, or customer success engineer, look into business to business 
+
+    boards.greenhouse,twillio/jobs -technical writer. 
+
+    also look into builtin! 
+
+Functional Tools 
+
+    The things that are important to know are the basics, ie data structures, understanding time and space complexity. 
+
+    Good book to read is cracking the coding interview, goes into all sorts of stuff! 
+
+    Use things like hacker rank, being able to build a lot of things 
+
+    understanding big O notations, how efficient is your algo, and how much space does it take up. 
+
+        Big!!!! Do hacker rank, figure out how to do it, then figure out the big o notation, then use chat gpt, to figure it out as well, and ask how to optimize it. 
+
+    Learn cloud computing basics!!! 
+
+        Cloud Practitioner (AWS)
+
+        AZ-900 (Azure)
+
+    Keep A Schedule After You Graduate!!!!!!!!!!!!!!! 
+
+    Look into the OdenProject, it helps you learn mern, lots of reading, and practice stuff. 
+
+
+Negotiation
+
+    First call with a recuiter, answer how much you want to get paid, answer with compensation and total compensation are a very compex answer, Never give your number, they count 401k match, equity, and all kinds of stuff. Thats a great question, do you guys have a payband, i live in this state, etc, you can use levels.Fyi 
+
+    Levels.fyi
+        will give you your total comp for the positions your applying for. people can post what they got, and you can see the level they got, and what level they give you, always fight for your level. 
+
+    equity vs options
+
+        equity, each year you get x amount of stock options! typically you have to stay there for a year until you get the equity, and then you get a percentage added to it per year till you have the total amount of equity promised. When you sign on, and when the equity is issued, your value is based on that 
+
+            equity is cheap for them, remember that, negotiate for base for equity, its not a grantee if you dont stay there. 
+
+        if you work on a company that isn't public, you get options, options are similar to stocks, if your company gets bought, he gets the option to buy the shares, at the cost of what the company was valued at when you signed on. 
+
+
+
+    remote work-Its available! 
+
+    Look into MentorMesh, community of people who connect mentors with mentees https://mentormesh.io/
+
+
+    Microsoft leap. https://leap.microsoft.com/en-US/
+
+    look into project management 

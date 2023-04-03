@@ -6,42 +6,42 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const AuthorEdit = () => {
 
-      //Pass in Author _id and set up useState, Navigate, errors
-      const {id} = useParams();
-      const [name, setName] = useState("");
-      const [errors, setErrors] = useState({});
-      const navigate = useNavigate();
+  //Pass in Author _id and set up useState, Navigate, errors
+  const {id} = useParams();
+  const [name, setName] = useState("");
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
-    //Get Author Information. 
-    useEffect (() => {
-      axios.get(`http://localhost:8000/api/product/${id}`)
-          .then( res => {
-              console.log(res.data);
-              setName(res.data.author.name)
-          }) 
-          .catch((err) => {
-              console.log(err);
-          });
-  }, []);
-
-      //Edit Submission W/ Navigation to Dashboard
-      const editAuthor = (e) => {
-
-        e.preventDefault();
-              
-        axios.patch(`http://localhost:8000/api/author/${id}`, {
-            name
+  //Get Author Information. 
+  useEffect (() => {
+    axios.get(`http://localhost:8000/api/product/${id}`)
+        .then( res => {
+            console.log(res.data);
+            setName(res.data.author.name)
         }) 
-            .then(res =>{
-                console.log(res.data);
-                navigate("/")
-  
-        }) 
-            .catch(err => {
-                console.log(err)
-                setErrors(err.response.data.err.errors);
-            })
-      }
+        .catch((err) => {
+            console.log(err);
+        });
+}, []);
+
+  //Edit Submission W/ Navigation to Dashboard
+  const editAuthor = (e) => {
+
+    e.preventDefault();
+          
+    axios.patch(`http://localhost:8000/api/author/${id}`, {
+        name
+    }) 
+        .then(res =>{
+            console.log(res.data);
+            navigate("/")
+
+    }) 
+        .catch(err => {
+            console.log(err)
+            setErrors(err.response.data.err.errors);
+        })
+  }
 
       //Cancel
       const cancel = () => {

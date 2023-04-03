@@ -10,7 +10,7 @@ Beginning
 
     mkdir server
 
-    npm create-react-app client 
+    npx create-react-app client 
 
     cd client 
 
@@ -136,7 +136,7 @@ Folder Structure
                 { _id: req.params.id },
                 req.body,
                 { new: true, runValidators: true }
-            )
+                )
                 .then(updated<<ModelName>> => {
                     res.json({ <<modelName>>: updated<<ModelName>> })
                 })

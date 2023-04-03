@@ -103,6 +103,174 @@ Node Version
 
     Now that we have installed NGINX (our server software), we should be able to navigate to our browser to our server's public IP address and see the default NGINX splash screen. 
 
-    Important if you do not see the Welcome to NGINX message you either did not install NGINX in the previous step, your url is trying to connect using secure http (https) or you did not set up your Security Group correctly. Start by verifying your URL begins with HTTP:// and then the nginx service is running by using the command service nginx status. 
+        Important if you do not see the Welcome to NGINX message you either did not install NGINX in the previous step, your url is trying to connect using secure http (https) or you did not set up your Security Group correctly. Start by verifying your URL begins with HTTP:// and then the nginx service is running by using the command service nginx status. 
 
-    
+    Now that we have installed git, we can use it to close our repository that we made in the first step. 
+
+        git clone https://github.com/your_github_username/MERN-deployment.git
+
+    Next we will export a variable on our server. We do this to make things simpler. 
+
+        export repoName=MERN-Deployment
+
+    After exporting the variable, we can check to make sure it was set by echoing it. Echo will print the variable out in our terminal. 
+
+        echo $repoName 
+
+    When referring to our variable "repoName" moving forward we will have a $ at the beginning of it. 
+
+
+Setting Up the Front End 
+
+    Next we'll cd into the client folder and then delete a folder at /var/www/html. This is where the hmtl from eariler "welcome to ngix spash screen lives. We are then going to move the folder production react app code that we built before pushing the code to github to this folder. lastly well restar tthe nginx service so that it no longer serves the previous welcome message 
+
+        cd ~/$repoName/client
+        npm install
+        npm run build
+        sudo rm -rf /var/www/html 
+        sudo mv build /var/www/html
+        sudo service nginx restart
+
+    If we navigate our browser to our IP address we should see the front end of our project rather than the default NGINX splash screen. If you dont see this go back and try rerunning the previous steps. 
+
+    Fixing our front end routes 
+
+        When we were developing before, our back-end server was accessible on "http:localhost:8000" but when we deploy our project the back-end will then be accessible at whatever our IP address happens to be. To fix the links we would essentially need to go into our build folder and change all routes that look like this into routes that start with "/" while we could fire vim and do just that we can instead use the power of bash commands to make this change in one command. 
+
+            sudo grep -rl localhost /var/www/html | xargs sed -i 's/http:\/\/localhost:8000//g'
+
+        Important! if your back-end server runs on a port other than 800 change the command above to use that. 
+
+        This command will use grep to find all lines that contain the string, "localHost in our build files and pipe them into SED which will do a find and replace to remove the matching string and leave it with our needed "/" 
+
+    Setting up the Back-end 
+
+        next we need to retrieve the node_modules that we previously gitignored. 
+
+            cd ~/$repoName/server
+            npm i
+
+        Next we need to get our back-end server working. 
+
+        First thing we need is a working MongoDB 
+
+            Note these commands are very long so each new command is prefaced by a $ dont add the $ 
+
+                $ wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+                $ echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+                $ sudo apt update
+                $ sudo apt install -y mongodb-org
+                $ sudo service mongod start
+                $ service mongod status
+
+            These commands will install mongoDb, start the mongoDB daemon, and display the daemons status, You should see a message that looks like the following letting you know its working! 
+
+    Next we will configure the NGINX 
+
+        The following commands will delete the old NGINX configuration and open the file in vim for us to copy in our new configuration 
+
+            sudo rm /etc/nginx/sites-available/default
+            sudo vim /etc/nginx/sites-available/default
+        
+        Once inside the vim, use i to go into insert mode and then copy and paste the following text 
+
+            # MERN-Deployment Configuration 1-16-2020
+            server {
+                listen 80 default_server;
+                listen [::]:80 default_server;
+                root /var/www/html;
+                index index.html index.htm index.nginx-debian.html;
+                server_name MERN-Deployment;
+                location /api {
+                    proxy_pass http://localhost:8000;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade $http_upgrade;
+                    proxy_set_header Connection 'upgrade';
+                    proxy_set_header Host $host;
+                    proxy_cache_bypass $http_upgrade;    
+                }
+                location / {
+                    try_files $uri $uri/ =404;
+                }
+                error_page 404 /index.html;
+            }
+
+        After pasting this configuration you can escape vim by using esc followed by :wd and then enter 
+
+        This configuration will point all request that start with /api to our backend and will respond to every other request with our index.html file. 
+
+        now that we have set up the configuration we can test to see if the back-end is now connecting, 
+
+            cd ~/$repoName/server       <--  you should already be in this folder if you followed this tutorial
+            sudo service nginx restart
+            node server.js
+
+        At this point our project should be working as long as the node server.js command is running 
+
+    Wrapping up 
+
+        Our project is working, but as soon as we disconnect from the server instance, our project will stop running. What we need is a process manager to keep our back-end running. Enter pm2, PM2 is a  project manager for node.js applications. 
+
+        Stop the currently running node server and start your server.js using the pm2 process manager with the following commands. 
+
+            sudo npm i pm2 -g
+            pm2 start server.js
+            pm2 status
+
+        These command will install pm2 globally, tell pm2 to run server.js for us and display the status of pm2. 
+
+        at this point if the status says online your finished!!!!!! 
+
+Updating your code and refreshing your installation:
+
+    If you find a bug and want to fix it, or just add some fun extras so you can show off to friends. 
+
+        update your code and test it on your local computer 
+        stage and commit your code to your git repo using the command line or your vs code editors. 
+        push the changes to github: git push 
+
+    connect via SSH to your instance as described above. 
+
+        change directory into your project folder. cd ~/MERN-Deployment
+
+        stop the pm2 process daemon pm2 stop all 
+
+            this should stop the express/node server
+
+        pull the recent changes from github using git pull 
+
+        change directory into the client folder cd client 
+
+        build the react app run npm run build 
+
+        stop the currently running nginx process 
+
+            sudo service nginx stop
+            sudo service nginx status 
+
+        replace the running react app and remember to update the URLs using grep and sed. 
+
+            sudo rm -rf /var/www/html
+            sudo mv build /var/www/html
+            sudo grep -rl localhost /var/www/html | xargs sed -i 's/http:\/\/localhost:8000//g'
+
+        Restart the PM@ process : 
+
+            pm2 restart all 
+
+            this should restart your express/node server 
+
+        restart the react app 
+
+            sudo service nginx restart
+
+            sudo service nginx status 
+
+    to view the server logs while using pm2 run the following command 
+
+        sudo pm2 logs 
+
+    to exit the logs use 
+
+        ctrl + c 
+        
