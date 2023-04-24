@@ -45,7 +45,7 @@ Working With Backend
             <<modelName>>.model.js
 
         routes folder
-            <<modelName>>.routes.js
+            <<modelName>>.route.js
 
         server.js file
 
@@ -93,7 +93,7 @@ Folder Structure
 
     Controllers 
 
-        <<ModelName>>.controller.js 
+        <<modelName>>.controller.js 
 
             const <<ModelName>> = require ("../models/<<modelName>>.model");
 
@@ -157,15 +157,17 @@ Folder Structure
 
     Routes 
 
-        const <<ModelName>>Controller = require("../controllers/<<modelName>>.controller");
+        <<modelName>>.route.js
 
-        module.exports = app => {
-            app.get('/api/<<modelName>>', <<ModelName>>Controller.findAll<<ModelNamePlural>>);
-            app.get('/api/<<modelName>>/:id', <<ModelName>>Controller.findOne<<ModelName>>);
-            app.patch('/api/<<modelName>>/:id', <<ModelName>>Controller.update<<ModelName>>ById);
-            app.post('/api/<<modelName>>', <<ModelName>>Controller.createNew<<ModelName>>);
-            app.delete('/api/<<modelName>>/:id', <<ModelName>>Controller.deleteAnExisting<<ModelName>>);
-        }
+            const <<ModelName>>Controller = require("../controllers/<<modelName>>.controller");
+
+            module.exports = app => {
+                app.get('/api/<<modelName>>', <<ModelName>>Controller.findAll<<ModelNamePlural>>);
+                app.get('/api/<<modelName>>/:id', <<ModelName>>Controller.findOne<<ModelName>>);
+                app.patch('/api/<<modelName>>/:id', <<ModelName>>Controller.update<<ModelName>>ById);
+                app.post('/api/<<modelName>>', <<ModelName>>Controller.createNew<<ModelName>>);
+                app.delete('/api/<<modelName>>/:id', <<ModelName>>Controller.deleteAnExisting<<ModelName>>);
+            }
 
 
 Inside of server.js 
